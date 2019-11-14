@@ -64,85 +64,87 @@ class Badges extends React.PureComponent {
     }
 
     return <>
-      {(this.state.flags & UserFlags.STAFF) !== 0 &&
+      {this.props.getSetting('displayStaff', true) && (this.state.flags & UserFlags.STAFF) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.STAFF_BADGE_TOOLTIP}
-        delay={1000}
+        delay={500}
       >
         <div className={this.props.classes.profileBadgeStaff}/>
       </Tooltip>}
 
-      {(this.state.flags & UserFlags.PARTNER) !== 0 &&
+      {this.props.getSetting('displayPartner', true) && (this.state.flags & UserFlags.PARTNER) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.PARTNER_BADGE_TOOLTIP}
-        delay={1000}
+        delay={500}
       >
         <div className={this.props.classes.profileBadgePartner}/>
       </Tooltip>}
 
-      {(this.state.flags & UserFlags.HYPESQUAD) !== 0 &&
+      {this.props.getSetting('displayHypeSquad', true) && (this.state.flags & UserFlags.HYPESQUAD) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.HYPESQUAD_BADGE_TOOLTIP}
-        delay={1000}
+        delay={500}
       >
         <div className={this.props.classes.profileBadgeHypesquad}/>
       </Tooltip>}
 
-      {(this.state.flags & UserFlags.HYPESQUAD_ONLINE_HOUSE_1) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_1 })}
-        delay={1000}
-      >
-        <div
-          className={this.props.classes[`profileBadgeHypeSquadOnlineHouse1${this.props.hsWinners === 1 ? 'Winner' : ''}`]}/>
-      </Tooltip>}
+      {this.props.getSetting('displayHypeSquadOnline', true) && <>
+        {(this.state.flags & UserFlags.HYPESQUAD_ONLINE_HOUSE_1) !== 0 &&
+        <Tooltip
+          text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_1 })}
+          delay={500}
+        >
+          <div
+            className={this.props.classes[`profileBadgeHypeSquadOnlineHouse1${this.props.hsWinners === 1 ? 'Winner' : ''}`]}/>
+        </Tooltip>}
 
-      {(this.state.flags & UserFlags.HYPESQUAD_ONLINE_HOUSE_2) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_2 })}
-        delay={1000}
-      >
-        <div
-          className={this.props.classes[`profileBadgeHypeSquadOnlineHouse2${this.props.hsWinners === 2 ? 'Winner' : ''}`]}/>
-      </Tooltip>}
+        {(this.state.flags & UserFlags.HYPESQUAD_ONLINE_HOUSE_2) !== 0 &&
+        <Tooltip
+          text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_2 })}
+          delay={500}
+        >
+          <div
+            className={this.props.classes[`profileBadgeHypeSquadOnlineHouse2${this.props.hsWinners === 2 ? 'Winner' : ''}`]}/>
+        </Tooltip>}
 
-      {(this.state.flags & UserFlags.HYPESQUAD_ONLINE_HOUSE_3) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_3 })}
-        delay={1000}
-      >
-        <div
-          className={this.props.classes[`profileBadgeHypeSquadOnlineHouse3${this.props.hsWinners === 3 ? 'Winner' : ''}`]}/>
-      </Tooltip>}
+        {(this.state.flags & UserFlags.HYPESQUAD_ONLINE_HOUSE_3) !== 0 &&
+        <Tooltip
+          text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_3 })}
+          delay={500}
+        >
+          <div
+            className={this.props.classes[`profileBadgeHypeSquadOnlineHouse3${this.props.hsWinners === 3 ? 'Winner' : ''}`]}/>
+        </Tooltip>}
+      </>}
 
-      {(this.state.flags & UserFlags.BUG_HUNTER) !== 0 &&
+      {this.props.getSetting('displayHunter', true) && (this.state.flags & UserFlags.BUG_HUNTER) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.BUG_HUNTER_BADGE_TOOLTIP}
-        delay={1000}
+        delay={500}
       >
         <div className={this.props.classes.profileBadgeBugHunter}/>
       </Tooltip>}
 
-      {(this.state.flags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 &&
+      {this.props.getSetting('displayEarly', true) && (this.state.flags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.EARLY_SUPPORTER_TOOLTIP}
-        delay={1000}
+        delay={500}
       >
         <div className={this.props.classes.profileBadgeEarlySupporter}/>
       </Tooltip>}
 
-      {this.state.premiumSince &&
+      {this.props.getSetting('displayNitro', true) && this.state.premiumSince &&
       <Tooltip
         text={this.props.i18n.Messages.PREMIUM_BADGE_TOOLTIP.format({ date: new Date(this.state.premiumSince) })}
-        delay={1000}
+        delay={500}
       >
         <div className={this.props.classes.profileBadgePremium}/>
       </Tooltip>}
 
-      {this.state.premiumGuildSince &&
+      {this.props.getSetting('displayBoosting', true) && this.state.premiumGuildSince &&
       <Tooltip
         text={this.props.i18n.Messages.PREMIUM_GUILD_SUBSCRIPTION_TOOLTIP.format({ date: new Date(this.state.premiumGuildSince) })}
-        delay={1000}
+        delay={500}
       >
         <div
           className={this.props.classes[`profileGuildSubscriberlvl${this.props.userLevelCompute.getUserLevel(this.state.premiumGuildSince)}`]}/>

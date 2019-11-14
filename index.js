@@ -29,7 +29,8 @@ module.exports = class BadgesEverywhere extends Plugin {
     this.loadCSS(resolve(__dirname, 'style.scss'));
     this.registerSettings('morebadges', 'Badges Everywhere', Settings);
 
-    this.topSectionNormal = (await getModule([ 'profileBadgeStaff' ])).topSectionNormal;
+    this.classes = await getModule([ 'profileBadgeStaff' ]);
+    this.ConnectedBadges = this.settings.connectStore(Badges);
 
     this._injectMembers();
     this._injectDMs();
@@ -51,8 +52,8 @@ module.exports = class BadgesEverywhere extends Plugin {
       }
 
       res.props.children.unshift(
-        React.createElement('div', { className: `badges ${_this.topSectionNormal}` },
-          React.createElement(Badges, { user: this.props.user })
+        React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+          React.createElement(_this.ConnectedBadges, { user: this.props.user })
         )
       );
       return res;
@@ -66,9 +67,9 @@ module.exports = class BadgesEverywhere extends Plugin {
       if (!_this.settings.get('dms', true)) {
         return res;
       }
-      res.props.name = React.createElement('div', { className: `badges ${_this.topSectionNormal}` }, [
+      res.props.name = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` }, [
         React.createElement('span', null, res.props.name),
-        React.createElement(Badges, { user: this.props.user })
+        React.createElement(_this.ConnectedBadges, { user: this.props.user })
       ]);
       return res;
     });
@@ -82,8 +83,8 @@ module.exports = class BadgesEverywhere extends Plugin {
         return res;
       }
       res.props.children.props.children.push(
-        React.createElement('div', { className: `badges ${_this.topSectionNormal}` },
-          React.createElement(Badges, { user: this.props.message.author })
+        React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+          React.createElement(_this.ConnectedBadges, { user: this.props.message.author })
         )
       );
       return res;
