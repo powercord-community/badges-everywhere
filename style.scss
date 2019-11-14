@@ -1,0 +1,50 @@
+/**
+ * Badges Everywhere
+ * Copyright (C) 2019 Bowser65
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+.name-uJV0GL, .headerCozyMeta-rdohGq, .nameAndDecorators-5FJ2dg {
+  .badges {
+    display: flex;
+    background-color: transparent;
+    position: relative;
+    margin-left: 3px;
+
+    div {
+      position: relative;
+      bottom: -2px;
+      height: 16px;
+      width: 16px;
+      flex-shrink: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-left: 3px;
+    }
+  }
+}
+
+.headerCozyMeta-rdohGq .badges {
+  display: inline-flex;
+
+  div {
+    bottom: -3px;
+  }
+}
+
+.members-1998pB .nameAndDecorators-5FJ2dg .badges div {
+  bottom: 0;
+}
