@@ -82,11 +82,13 @@ module.exports = class BadgesEverywhere extends Plugin {
       if (!_this.settings.get('messages', true)) {
         return res;
       }
-      res.props.children.props.children.push(
+      const originalChild = res.props.children;
+      res.props.children = (props) => [
+        React.createElement(originalChild, props),
         React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
           React.createElement(_this.ConnectedBadges, { user: this.props.message.author })
         )
-      );
+      ];
       return res;
     });
   }
