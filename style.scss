@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.name-uJV0GL, .headerCozyMeta-rdohGq, .nameAndDecorators-5FJ2dg, .morebadges {
+.name-uJV0GL, .headerCozy-2H1QuU, .nameAndDecorators-5FJ2dg, .morebadges {
   .badges {
     display: flex;
     align-items: center;
@@ -35,7 +35,7 @@
   }
 }
 
-.headerCozyMeta-rdohGq {
+.headerCozy-2H1QuU {
   display: flex;
   align-items: center;
 
@@ -45,6 +45,8 @@
 
   .badges {
     display: inline-flex;
+    margin-left: 0;
+    margin-right: 3px;
 
     div {
       width: 20px;
