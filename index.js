@@ -77,19 +77,20 @@ module.exports = class BadgesEverywhere extends Plugin {
 
   async _injectMessages () {
     const _this = this;
-    const MessageHeader = await getModule(m => m.default && m.default.displayName === 'MessageHeader');
-    inject('morebadges-messages', MessageHeader, 'default', (args, res) => {
+    const MessageTimestamp = await getModule(['MessageTimestamp']);
+    inject('morebadges-messages', MessageTimestamp, 'default', (args, res) => {
       if (!_this.settings.get('messages', true)) {
         return res;
       }
 
+      const header = res.props.children[1];
+
       // eslint-disable-next-line prefer-destructuring
-      res.props.children[4] = res.props.children[3];
-      res.props.children[3] = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+      header.props.children[3] = header.props.children[2];
+      header.props.children[2] = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
         React.createElement(this.ConnectedBadges, { user: args[0].message.author })
       );
       return res;
     });
-    MessageHeader.default.displayName = 'MessageHeader';
   }
 };
