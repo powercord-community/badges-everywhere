@@ -18,6 +18,7 @@ class Badges extends React.PureComponent {
     if (!this.props.user) {
       return;
     }
+    
     if (!Badges.cache[this.props.user.id]) {
       Badges.cache[this.props.user.id] = {
         loaded: false,
@@ -49,7 +50,6 @@ class Badges extends React.PureComponent {
     if (!this.props.user || !this.state.loaded) {
       return null;
     }
-
     return <>
       {this.props.getSetting('displayStaff', true) && (this.state.flags & UserFlags.STAFF) !== 0 &&
       <Tooltip
@@ -110,6 +110,13 @@ class Badges extends React.PureComponent {
         delay={500}
       >
         <div className={this.props.classes.profileBadgeBugHunter}/>
+      </Tooltip>}
+      {this.props.getSetting('displayDeveloper', true) && (this.state.flags & UserFlags.VERIFIED_DEVELOPER) !== 0 &&
+      <Tooltip
+        text={this.props.i18n.Messages.VERIFIED_DEVELOPER_BADGE_TOOLTIP}
+        delay={500}
+      >
+        <div className={this.props.classes.profileBadgeVerifiedDeveloper}/>
       </Tooltip>}
 
       {this.props.getSetting('displayEarly', true) && (this.state.flags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 &&
