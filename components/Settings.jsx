@@ -111,8 +111,8 @@ module.exports = class Settings extends React.Component {
             </div>
           </SwitchItem>
           <SwitchItem
-            value={this.props.getSetting('displayDeveloper', true)}
-            onChange={() => this.props.toggleSetting('displayDeveloper', true)}
+            value={this.props.getSetting('displayVerifiedBotDeveloper', true)}
+            onChange={() => this.props.toggleSetting('displayVerifiedBotDeveloper', true)}
           >
             <div className={`badges ${this.classes.topSectionNormal}`}>
               <span>Bot Developer</span>
