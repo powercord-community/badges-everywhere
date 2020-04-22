@@ -111,7 +111,7 @@ class Badges extends React.PureComponent {
       >
         <div className={this.props.classes.profileBadgeBugHunter}/>
       </Tooltip>}
-      {this.props.getSetting('displayDeveloper', true) && (this.state.flags & UserFlags.VERIFIED_DEVELOPER) !== 0 &&
+      {this.props.getSetting('displayVerifiedBotDeveloper', true) && (this.state.flags & UserFlags.VERIFIED_DEVELOPER) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.VERIFIED_DEVELOPER_BADGE_TOOLTIP}
         delay={500}
