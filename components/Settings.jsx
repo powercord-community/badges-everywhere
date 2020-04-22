@@ -88,7 +88,8 @@ module.exports = class Settings extends React.Component {
           >
             <div className={`badges ${this.classes.topSectionNormal}`}>
               <span>Bug Hunter</span>
-              <div className={this.classes.profileBadgeBugHunter}/>
+              <div className={this.classes.profileBadgeBugHunterLevel1}/>
+              <div className={this.classes.profileBadgeBugHunterLevel2}/>
             </div>
           </SwitchItem>
           <SwitchItem
@@ -110,6 +111,16 @@ module.exports = class Settings extends React.Component {
             </div>
           </SwitchItem>
           <SwitchItem
+            value={this.props.getSetting('displayDeveloper', true)}
+            onChange={() => this.props.toggleSetting('displayDeveloper', true)}
+          >
+            <div className={`badges ${this.classes.topSectionNormal}`}>
+              <span>Bot Developer</span>
+              <div className={this.classes.profileBadgeVerifiedDeveloper}/>
+            </div>
+          </SwitchItem>
+          <SwitchItem
+          
             value={this.props.getSetting('displayBoosting', true)}
             onChange={() => this.props.toggleSetting('displayBoosting', true)}
           >
