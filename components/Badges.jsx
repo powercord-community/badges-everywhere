@@ -104,13 +104,23 @@ class Badges extends React.PureComponent {
         </Tooltip>}
       </>}
 
-      {this.props.getSetting('displayHunter', true) && (this.state.flags & UserFlags.BUG_HUNTER) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.BUG_HUNTER_BADGE_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgeBugHunter}/>
-      </Tooltip>}
+      {this.props.getSetting('displayHunter', true) && <>
+        {(this.state.flags & UserFlags.BUG_HUNTER_LEVEL_1) !== 0 &&
+        <Tooltip
+          text={this.props.i18n.Messages.BUG_HUNTER_BADGE_TOOLTIP}
+          delay={500}
+        >
+          <div className={this.props.classes.profileBadgeBugHunterLevel1}/>
+        </Tooltip>}
+        {(this.state.flags & UserFlags.BUG_HUNTER_LEVEL_2) !== 0 &&
+        <Tooltip
+          text={this.props.i18n.Messages.BUG_HUNTER_BADGE_TOOLTIP}
+          delay={500}
+        >
+          <div className={this.props.classes.profileBadgeBugHunterLevel2}/>
+        </Tooltip>}
+      </>}
+
       {this.props.getSetting('displayVerifiedBotDeveloper', true) && (this.state.flags & UserFlags.VERIFIED_DEVELOPER) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.VERIFIED_DEVELOPER_BADGE_TOOLTIP}
