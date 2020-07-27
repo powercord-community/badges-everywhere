@@ -7,27 +7,31 @@ const { React, Flux, getModule, http: { get }, constants: { Endpoints, UserFlags
 const { AsyncComponent, Tooltip } = require('powercord/components');
 const { sleep } = require('powercord/util');
 
-let requestsDone = 0;
-let timeout = false;
+let noReq = false;
 async function doGet (endpoint) {
-  // eslint-disable-next-line no-unmodified-loop-condition
-  while (requestsDone >= 5 || timeout) {
-    await sleep(500);
-  }
-
-  requestsDone++;
   let res;
   while (!res) {
+    if (noReq) {
+      res = { body: {} };
+      break;
+    }
     try {
       res = await get(endpoint);
     } catch (e) {
       if (e.status === 429) {
-        timeout = true;
-        setTimeout(() => (timeout = false), e.body.retry_after);
+        if (!e.body) {
+          console.log('Encountered hard cloudflare limit. Disabling requests.');
+          noReq = true;
+          res = { body: {} };
+          break;
+        } else {
+          await sleep(e.body.retry_after);
+        }
+      } else {
+        res = { body: {} };
       }
     }
   }
-  setTimeout(() => requestsDone--, 1e3);
   return res;
 }
 
