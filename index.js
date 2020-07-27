@@ -3,7 +3,6 @@
  * Licensed under the Open Software License version 3.0
  */
 
-const { resolve } = require('path');
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { inject, uninject } = require('powercord/injector');
 const { Plugin } = require('powercord/entities');
@@ -13,8 +12,12 @@ const Badges = require('./components/Badges');
 
 module.exports = class BadgesEverywhere extends Plugin {
   async startPlugin () {
-    this.loadCSS(resolve(__dirname, 'style.scss'));
-    this.registerSettings('morebadges', 'Badges Everywhere', Settings);
+    this.loadStylesheet('style.scss');
+    powercord.api.settings.registerSettings('morebadges', {
+      category: this.entityID,
+      label: 'Badges Everywhere',
+      render: Settings
+    });
 
     this.classes = await getModule([ 'profileBadgeStaff' ]);
     this.ConnectedBadges = this.settings.connectStore(Badges);
@@ -25,6 +28,7 @@ module.exports = class BadgesEverywhere extends Plugin {
   }
 
   pluginWillUnload () {
+    powercord.api.settings.unregisterSettings('morebadges');
     uninject('morebadges-dm');
     uninject('morebadges-members');
     uninject('morebadges-messages');

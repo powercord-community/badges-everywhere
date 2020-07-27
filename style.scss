@@ -3,20 +3,23 @@
  * Licensed under the Open Software License version 3.0
  */
 
-.name-uJV0GL, .header-23xsNx, .nameAndDecorators-5FJ2dg, .morebadges {
+ .name-uJV0GL, .header-23xsNx, .nameAndDecorators-5FJ2dg, .morebadges {
   .badges {
     display: flex;
     align-items: center;
     background-color: transparent !important;
     margin-left: 3px;
 
-    div {
+    div:not(.overflow-WK9Ogt) {
       height: 16px;
       width: 16px;
       flex-shrink: 0;
-      background-size: contain;
+      background-size: 16px 16px;
       background-repeat: no-repeat;
       background-position: center;
+    }
+
+    div:not([class]) {
       margin-left: 3px;
     }
   }
@@ -26,20 +29,23 @@
   display: flex;
   align-items: center;
 
-  > span {
-    display: flex;
-  }
-
   .badges {
     display: inline-flex;
     margin-left: 0;
     margin-right: 3px;
+    height: 16px;
 
     div {
       width: 20px;
       height: 20px;
     }
   }
+}
+
+.compact-T3H92H .header-23xsNx .badges {
+  position: relative;
+  top: 3px;
+  left: -4px;
 }
 
 .morebadges .badges {

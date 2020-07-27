@@ -120,7 +120,6 @@ module.exports = class Settings extends React.Component {
             </div>
           </SwitchItem>
           <SwitchItem
-          
             value={this.props.getSetting('displayBoosting', true)}
             onChange={() => this.props.toggleSetting('displayBoosting', true)}
           >
