@@ -20,7 +20,7 @@ module.exports = class Settings extends React.Component {
         <SwitchItem
           note='Display badges in chat messages.'
           value={this.props.getSetting('messages', true)}
-          onChange={() => this.props.toggleSetting('messags', true)}
+          onChange={() => this.props.toggleSetting('messages', true)}
         >
           Messages
         </SwitchItem>
