@@ -6,6 +6,7 @@
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { inject, uninject } = require('powercord/injector');
 const { Plugin } = require('powercord/entities');
+const { findInReactTree } = require('powercord/util');
 
 const Settings = require('./components/Settings');
 const Badges = require('./components/Badges');
@@ -74,14 +75,13 @@ module.exports = class BadgesEverywhere extends Plugin {
         return res;
       }
 
-      const header = res.props.children[1];
-
-      const index = header.props.children.indexOf(header.props.children.find(c => c.props?.timestamp));
+      const header = findInReactTree(res, e => Array.isArray(e) && e.length >= 4 && e.find(c => c?.props?.renderPopout));
+      const index = header.indexOf(header.find(c => c?.props?.renderPopout));
       const element = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
         React.createElement(this.ConnectedBadges, { user: args[0].message.author })
       );
 
-      header.props.children.splice(index, 0, element);
+      header.splice(index + 1, 0, element);
       return res;
     });
   }
