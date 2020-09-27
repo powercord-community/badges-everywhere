@@ -8,7 +8,14 @@ const { AsyncComponent, Tooltip } = require('powercord/components');
 const { sleep } = require('powercord/util');
 
 let noReq = false;
+let executing = false;
 async function doGet (endpoint) {
+  // eslint-disable-next-line no-unmodified-loop-condition
+  while (executing) {
+    await sleep(10);
+  }
+
+  executing = true;
   let res;
   while (!res) {
     if (noReq) {
@@ -32,6 +39,8 @@ async function doGet (endpoint) {
       }
     }
   }
+
+  setTimeout(() => (executing = false), 250);
   return res;
 }
 
