@@ -76,11 +76,12 @@ module.exports = class BadgesEverywhere extends Plugin {
 
       const header = res.props.children[1];
 
-      // eslint-disable-next-line prefer-destructuring
-      header.props.children[3] = header.props.children[2];
-      header.props.children[2] = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+      const index = header.props.children.indexOf(header.props.children.find(c => c.props?.timestamp));
+      const element = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
         React.createElement(this.ConnectedBadges, { user: args[0].message.author })
       );
+
+      header.props.children.splice(index, 0, element);
       return res;
     });
   }
