@@ -11,6 +11,8 @@ const { findInReactTree } = require('powercord/util');
 const Settings = require('./components/Settings');
 const Badges = require('./components/Badges');
 
+const MessageComponents = [ 'ChannelMessage', 'InboxMessage' ];
+
 module.exports = class BadgesEverywhere extends Plugin {
   async startPlugin () {
     this.loadStylesheet('style.scss');
@@ -33,6 +35,7 @@ module.exports = class BadgesEverywhere extends Plugin {
     uninject('morebadges-dm');
     uninject('morebadges-members');
     uninject('morebadges-messages');
+    MessageComponents.forEach(displayName => uninject(`morebadges-${displayName}`));
   }
 
   async _injectMembers () {
@@ -69,14 +72,16 @@ module.exports = class BadgesEverywhere extends Plugin {
 
   async _injectMessages () {
     const _this = this;
-    const MessageTimestamp = await getModule([ 'MessageTimestamp' ]);
-    inject('morebadges-messages', MessageTimestamp, 'default', (args, res) => {
+    const MessageHeader = await getModule([ 'MessageTimestamp' ]);
+    inject('morebadges-messages', MessageHeader, 'default', (args, res) => {
+      console.log(args, res);
       if (!_this.settings.get('messages', true)) {
         return res;
       }
 
-      const header = findInReactTree(res, e => Array.isArray(e) && e.length >= 4 && e.find(c => c?.props?.renderPopout));
-      const index = header.indexOf(header.find(c => c?.props?.renderPopout));
+      const header = findInReactTree(res, e => Array.isArray(e) && e.length >= 4 && e.find(c => c?.props?.renderPopout || c?.props?.className?.includes('username')));
+      if (!header) return res;
+      const index = header.indexOf(header.find(c => c?.props?.renderPopout || c?.props?.className?.includes('username')));
       const element = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
         React.createElement(this.ConnectedBadges, { user: args[0].message.author })
       );
@@ -84,5 +89,19 @@ module.exports = class BadgesEverywhere extends Plugin {
       header.splice(index + 1, 0, element);
       return res;
     });
+
+    // fix for messages in search and inbox
+    for (const displayName of MessageComponents) {
+      const mdl = await getModule(m => m.type && m.type.displayName === displayName);
+      inject(`morebadges-${displayName}`, mdl, 'type', (_, res) => {
+        if (!_this.settings.get('messages', true)) {
+          return res;
+        }
+        if (!res?.props?.childrenHeader?.props?.message) return res;
+        res.props.childrenHeader.type = MessageHeader.default;
+        return res;
+      });
+      mdl.type.displayName = displayName;
+    }
   }
 };
