@@ -11,6 +11,8 @@ const { findInReactTree } = require('powercord/util');
 const Settings = require('./components/Settings');
 const Badges = require('./components/Badges');
 
+const MessageComponents = [ 'ChannelMessage', 'InboxMessage' ];
+
 module.exports = class BadgesEverywhere extends Plugin {
   async startPlugin () {
     this.loadStylesheet('style.scss');
@@ -33,6 +35,7 @@ module.exports = class BadgesEverywhere extends Plugin {
     uninject('morebadges-dm');
     uninject('morebadges-members');
     uninject('morebadges-messages');
+    MessageComponents.forEach(displayName => uninject(`morebadges-${displayName}`));
   }
 
   async _injectMembers () {
@@ -69,8 +72,8 @@ module.exports = class BadgesEverywhere extends Plugin {
 
   async _injectMessages () {
     const _this = this;
-    const MessageTimestamp = await getModule([ 'MessageTimestamp' ]);
-    inject('morebadges-messages', MessageTimestamp, 'default', (args, res) => {
+    const MessageHeader = await getModule([ 'MessageTimestamp' ]);
+    inject('morebadges-messages', MessageHeader, 'default', (args, res) => {
       if (!_this.settings.get('messages', true)) {
         return res;
       }
@@ -84,5 +87,19 @@ module.exports = class BadgesEverywhere extends Plugin {
 
       return res;
     });
+
+    // fix for messages in search and inbox
+    for (const displayName of MessageComponents) {
+      const mdl = await getModule(m => m.type && m.type.displayName === displayName);
+      inject(`morebadges-${displayName}`, mdl, 'type', (_, res) => {
+        if (!_this.settings.get('messages', true)) {
+          return res;
+        }
+        if (!res?.props?.childrenHeader?.props?.message) return res;
+        res.props.childrenHeader.type = MessageHeader.default;
+        return res;
+      });
+      mdl.type.displayName = displayName;
+    }
   }
 };
