@@ -29,22 +29,17 @@
   }
 }
 
-.header-23xsNx {
-  display: flex;
-  align-items: center;
+.header-23xsNx .badges {
+  position: relative;
+  display: inline-flex;
+  margin-left: 1px;
+  margin-right: 1px;
+  height: 16px;
+  top: 3px;
 
-  .badges {
-    position: relative;
-    display: inline-flex;
-    margin-left: 0;
-    margin-right: 5px;
-    height: 16px;
-    top: 3px;
-
-    div {
-      width: 20px;
-      height: 20px;
-    }
+  div {
+    width: 20px;
+    height: 20px;
   }
 }
 
