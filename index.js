@@ -75,13 +75,13 @@ module.exports = class BadgesEverywhere extends Plugin {
         return res;
       }
 
-      const header = findInReactTree(res, e => Array.isArray(e) && e.length >= 4 && e.find(c => c?.props?.renderPopout));
-      const index = header.indexOf(header.find(c => c?.props?.renderPopout));
-      const element = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
-        React.createElement(this.ConnectedBadges, { user: args[0].message.author })
+      const header = findInReactTree(res, e => Array.isArray(e.props?.children) && e.props.children.find(c => c.props?.message));
+      header.props.children.push(
+        React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+          React.createElement(this.ConnectedBadges, { user: args[0].message.author })
+        )
       );
 
-      header.splice(index + 1, 0, element);
       return res;
     });
   }
