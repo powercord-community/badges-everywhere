@@ -47,7 +47,7 @@ module.exports = class BadgesEverywhere extends Plugin {
       }
 
       res.props.children.unshift(
-        React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+        React.createElement('div', { className: `badges ${_this.classes.colored}` },
           React.createElement(_this.ConnectedBadges, { user: this.props.user })
         )
       );
@@ -62,7 +62,7 @@ module.exports = class BadgesEverywhere extends Plugin {
       if (!_this.settings.get('dms', true)) {
         return res;
       }
-      res.props.name = React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` }, [
+      res.props.name = React.createElement('div', { className: `badges ${_this.classes.colored}` }, [
         React.createElement('span', null, res.props.name),
         React.createElement(_this.ConnectedBadges, { user: this.props.user })
       ]);
@@ -80,7 +80,7 @@ module.exports = class BadgesEverywhere extends Plugin {
 
       const header = findInReactTree(res, e => Array.isArray(e.props?.children) && e.props.children.find(c => c.props?.message));
       header.props.children.push(
-        React.createElement('div', { className: `badges ${_this.classes.topSectionNormal}` },
+        React.createElement('div', { className: `badges ${_this.classes.colored}` },
           React.createElement(this.ConnectedBadges, { user: args[0].message.author })
         )
       );
@@ -95,7 +95,9 @@ module.exports = class BadgesEverywhere extends Plugin {
         if (!_this.settings.get('messages', true)) {
           return res;
         }
-        if (!res?.props?.childrenHeader?.props?.message) return res;
+        if (!res?.props?.childrenHeader?.props?.message) {
+          return res;
+        }
         res.props.childrenHeader.type = MessageHeader.default;
         return res;
       });
