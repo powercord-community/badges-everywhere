@@ -101,12 +101,22 @@ module.exports = class BadgesEverywhere extends Plugin {
       }
 
       const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
+      const replyTo = findInReactTree(res, e => Array.isArray(e) && e.find(i => i?.props?.children?.props?.message));
+
       header.props.children.push(
         React.createElement('div', { className: `badges ${_this.classes.colored}` },
           React.createElement(this.ConnectedBadges, { user: args[0].message.author })
         )
       );
 
+      if (replyTo) {
+        const { message } = findInReactTree(replyTo, n => n.message && n.message.id !== args[0].message.id)
+        replyTo.push(
+          React.createElement('div', { className: `badges ${_this.classes.colored}` },
+            React.createElement(this.ConnectedBadges, { user: message.author })
+          )
+        )
+      }
       return res;
     });
 
