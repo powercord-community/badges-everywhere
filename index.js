@@ -94,7 +94,10 @@ module.exports = class BadgesEverywhere extends Plugin {
 
   async _injectMessages () {
     const _this = this;
-    const MessageHeader = await getModule([ 'MessageTimestamp' ]);
+    const MessageHeader = getModule([ 'MessageTimestamp' ], false) || getModule(m => (
+      typeof (m?.__powercordOriginal_default || m.default) === 'function' &&
+      (m?.__powercordOriginal_default || m.default).toString().includes('headerText')
+    ), false);
     inject('morebadges-messages', MessageHeader, 'default', (args, res) => {
       if (!_this.settings.get('messages', true)) {
         return res;
