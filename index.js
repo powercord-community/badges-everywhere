@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Cynthia K. Rey, All rights reserved.
+ * Copyright (c) 2020-2021 Cynthia K. Rey, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,8 +33,6 @@ const { findInReactTree } = require('powercord/util');
 const Settings = require('./components/Settings');
 const Badges = require('./components/Badges');
 
-const MessageComponents = [ 'ChannelMessage', 'InboxMessage' ];
-
 module.exports = class BadgesEverywhere extends Plugin {
   async startPlugin () {
     this.loadStylesheet('style.scss');
@@ -57,7 +55,6 @@ module.exports = class BadgesEverywhere extends Plugin {
     uninject('morebadges-dm');
     uninject('morebadges-members');
     uninject('morebadges-messages');
-    MessageComponents.forEach(displayName => uninject(`morebadges-${displayName}`));
   }
 
   async _injectMembers () {
@@ -94,46 +91,27 @@ module.exports = class BadgesEverywhere extends Plugin {
 
   async _injectMessages () {
     const _this = this;
-    const MessageHeader = await getModule([ 'MessageTimestamp' ]);
-    inject('morebadges-messages', MessageHeader, 'default', (args, res) => {
+    const d = (m) => {
+      const def = m.__powercordOriginal_default ?? m.default
+      return typeof def === 'function' ? def : null
+    }
+
+    const MessageAuthorName = await getModule((m) => d(m)?.toString().includes('userOverride'))
+    inject('morebadges-messages', MessageAuthorName, 'default', ([ { message: { author } } ], res) => {
       if (!_this.settings.get('messages', true)) {
         return res;
       }
 
-      const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
-      const replyTo = findInReactTree(res, e => Array.isArray(e) && e.find(i => i?.props?.children?.props?.message));
 
-      header.props.children.push(
+      res.props.children.splice(2, 0,
         React.createElement('div', { className: `badges ${_this.classes.colored}` },
-          React.createElement(this.ConnectedBadges, { user: args[0].message.author })
+          React.createElement(this.ConnectedBadges, { user: author })
         )
-      );
+      )
 
-      if (replyTo) {
-        const { message } = findInReactTree(replyTo, n => n.message && n.message.id !== args[0].message.id)
-        replyTo.push(
-          React.createElement('div', { className: `badges ${_this.classes.colored}` },
-            React.createElement(this.ConnectedBadges, { user: message.author })
-          )
-        )
-      }
-      return res;
-    });
+      return res
+    })
 
-    // fix for messages in search and inbox
-    for (const displayName of MessageComponents) {
-      const mdl = await getModule(m => m.type && m.type.displayName === displayName);
-      inject(`morebadges-${displayName}`, mdl, 'type', (_, res) => {
-        if (!_this.settings.get('messages', true)) {
-          return res;
-        }
-        if (!res?.props?.childrenHeader?.props?.message) {
-          return res;
-        }
-        res.props.childrenHeader.type = MessageHeader.default;
-        return res;
-      });
-      mdl.type.displayName = displayName;
-    }
+    return
   }
 };
