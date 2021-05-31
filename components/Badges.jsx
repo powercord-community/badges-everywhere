@@ -121,6 +121,14 @@ class Badges extends React.PureComponent {
         <div className={this.props.classes.profileBadgePartner}/>
       </Tooltip>}
 
+      {this.props.getSetting('displayCertifiedModerator', true) && (this.props.user.publicFlags & UserFlags.CERTIFIED_MODERATOR) !== 0 &&
+      <Tooltip
+        text={this.props.i18n.Messages.CERTIFIED_MODERATOR_BADGE_TOOLTIP}
+        delay={500}
+      >
+        <div className={this.props.classes.profileBadgeCertifiedModerator}/>
+      </Tooltip>}
+
       {this.props.getSetting('displayHypeSquad', true) && (this.props.user.publicFlags & UserFlags.HYPESQUAD) !== 0 &&
       <Tooltip
         text={this.props.i18n.Messages.HYPESQUAD_BADGE_TOOLTIP}
