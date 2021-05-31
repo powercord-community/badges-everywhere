@@ -85,6 +85,15 @@ module.exports = class Settings extends React.PureComponent {
             </div>
           </SwitchItem>
           <SwitchItem
+            value={this.props.getSetting('displayCertifiedModerator', true)}
+            onChange={() => this.props.toggleSetting('displayCertifiedModerator', true)}
+          >
+            <div className={`badges ${this.classes.topSectionNormal}`}>
+              <span>Discord Certified Moderator</span>
+              <div className={this.classes.profileBadgeCertifiedModerator}/>
+            </div>
+          </SwitchItem>
+          <SwitchItem
             value={this.props.getSetting('displayHypeSquad', true)}
             onChange={() => this.props.toggleSetting('displayHypeSquad', true)}
           >
