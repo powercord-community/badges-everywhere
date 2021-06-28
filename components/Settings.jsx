@@ -25,18 +25,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const { React } = require('powercord/webpack');
+const { React, constants } = require('powercord/webpack');
 const { Category, SwitchItem } = require('powercord/components/settings');
+const { Badge } = require('./Badges');
 
 module.exports = class Settings extends React.PureComponent {
   constructor (props) {
     super(props);
-
-    this.classes = powercord.pluginManager.get('badges-everywhere').classes;
     this.state = { opened: false };
   }
 
   render () {
+    const TODAY = new Date()
+    const BOOSTING = Object.values(constants.UserPremiumGuildSubscriptionMonths)
+      .map((m) => new Date().setUTCMonth(TODAY.getUTCMonth() - m + 1))
+
     return (
       <div className='morebadges'>
         <SwitchItem
@@ -70,101 +73,93 @@ module.exports = class Settings extends React.PureComponent {
             value={this.props.getSetting('displayStaff', true)}
             onChange={() => this.props.toggleSetting('displayStaff', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Discord Staff</span>
-              <div className={this.classes.profileBadgeStaff}/>
+              <Badge kind='staff'/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayPartner', true)}
             onChange={() => this.props.toggleSetting('displayPartner', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Discord Partner</span>
-              <div className={this.classes.profileBadgePartner}/>
+              <Badge kind='partner'/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayCertifiedModerator', true)}
             onChange={() => this.props.toggleSetting('displayCertifiedModerator', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Discord Certified Moderator</span>
-              <div className={this.classes.profileBadgeCertifiedModerator}/>
+              <Badge kind='certifiedPedo'/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayHypeSquad', true)}
             onChange={() => this.props.toggleSetting('displayHypeSquad', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Discord HypeSquad (Events)</span>
-              <div className={this.classes.profileBadgeHypesquad}/>
+              <Badge kind='hypesquad'/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayHypeSquadOnline', true)}
             onChange={() => this.props.toggleSetting('displayHypeSquadOnline', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Discord HypeSquad (Houses)</span>
-              <div className={this.classes.profileBadgeHypeSquadOnlineHouse1}/>
-              <div className={this.classes.profileBadgeHypeSquadOnlineHouse2}/>
-              <div className={this.classes.profileBadgeHypeSquadOnlineHouse3}/>
+              <Badge kind='hypesquadOnline' param={1}/>
+              <Badge kind='hypesquadOnline' param={2}/>
+              <Badge kind='hypesquadOnline' param={3}/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayHunter', true)}
             onChange={() => this.props.toggleSetting('displayHunter', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Bug Hunter</span>
-              <div className={this.classes.profileBadgeBugHunterLevel1}/>
-              <div className={this.classes.profileBadgeBugHunterLevel2}/>
-            </div>
-          </SwitchItem>
-          <SwitchItem
-            value={this.props.getSetting('displayEarly', true)}
-            onChange={() => this.props.toggleSetting('displayEarly', true)}
-          >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
-              <span>Early Supporter</span>
-              <div className={this.classes.profileBadgeEarlySupporter}/>
-            </div>
-          </SwitchItem>
-          <SwitchItem
-            value={this.props.getSetting('displayNitro', true)}
-            onChange={() => this.props.toggleSetting('displayNitro', true)}
-          >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
-              <span>Discord Nitro</span>
-              <div className={this.classes.profileBadgePremium}/>
+              <Badge kind='hunter' param={1}/>
+              <Badge kind='hunter' param={2}/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayVerifiedBotDeveloper', true)}
             onChange={() => this.props.toggleSetting('displayVerifiedBotDeveloper', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Bot Developer</span>
-              <div className={this.classes.profileBadgeVerifiedDeveloper}/>
+              <Badge kind='verifiedDev'/>
+            </div>
+          </SwitchItem>
+          <SwitchItem
+            value={this.props.getSetting('displayEarly', true)}
+            onChange={() => this.props.toggleSetting('displayEarly', true)}
+          >
+            <div className='badges'>
+              <span>Early Supporter</span>
+              <Badge kind='earlySupporter'/>
+            </div>
+          </SwitchItem>
+          <SwitchItem
+            value={this.props.getSetting('displayNitro', true)}
+            onChange={() => this.props.toggleSetting('displayNitro', true)}
+          >
+            <div className='badges'>
+              <span>Discord Nitro</span>
+              <Badge kind='premium' param={TODAY}/>
             </div>
           </SwitchItem>
           <SwitchItem
             value={this.props.getSetting('displayBoosting', true)}
             onChange={() => this.props.toggleSetting('displayBoosting', true)}
           >
-            <div className={`badges ${this.classes.topSectionNormal}`}>
+            <div className='badges'>
               <span>Nitro Boosting</span>
-              <div className={this.classes.profileGuildSubscriberlvl1}/>
-              <div className={this.classes.profileGuildSubscriberlvl2}/>
-              <div className={this.classes.profileGuildSubscriberlvl3}/>
-              <div className={this.classes.profileGuildSubscriberlvl4}/>
-              <div className={this.classes.profileGuildSubscriberlvl5}/>
-              <div className={this.classes.profileGuildSubscriberlvl6}/>
-              <div className={this.classes.profileGuildSubscriberlvl7}/>
-              <div className={this.classes.profileGuildSubscriberlvl8}/>
-              <div className={this.classes.profileGuildSubscriberlvl9}/>
+              {BOOSTING.map((b) => <Badge kind='boosting' param={b}/>)}
             </div>
           </SwitchItem>
         </Category>

@@ -42,7 +42,6 @@ module.exports = class BadgesEverywhere extends Plugin {
       render: Settings
     });
 
-    this.classes = await getModule([ 'profileBadgeStaff' ]);
     this.ConnectedBadges = this.settings.connectStore(Badges);
 
     this._injectMembers();
@@ -66,7 +65,7 @@ module.exports = class BadgesEverywhere extends Plugin {
       }
 
       res.props.children.unshift(
-        React.createElement('div', { className: `badges ${_this.classes.colored}` },
+        React.createElement('div', { className: `badges` },
           React.createElement(_this.ConnectedBadges, { user: this.props.user })
         )
       );
@@ -81,7 +80,7 @@ module.exports = class BadgesEverywhere extends Plugin {
       if (!_this.settings.get('dms', true)) {
         return res;
       }
-      res.props.name = React.createElement('div', { className: `badges ${_this.classes.colored}` }, [
+      res.props.name = React.createElement('div', { className: 'badges' }, [
         React.createElement('span', null, res.props.name),
         React.createElement(_this.ConnectedBadges, { user: this.props.user })
       ]);
@@ -104,7 +103,7 @@ module.exports = class BadgesEverywhere extends Plugin {
 
 
       res.props.children.splice(2, 0,
-        React.createElement('div', { className: `badges ${_this.classes.colored}` },
+        React.createElement('div', { className: 'badges' },
           React.createElement(this.ConnectedBadges, { user: author })
         )
       )

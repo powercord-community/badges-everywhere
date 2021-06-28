@@ -25,9 +25,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const { React, Flux, getModule, http: { get }, constants: { Endpoints, UserFlags } } = require('powercord/webpack');
-const { AsyncComponent, Tooltip } = require('powercord/components');
+const { React, getModule, http: { get }, constants: { Endpoints, UserFlags }, i18n: { Messages } } = require('powercord/webpack');
+const { Tooltip } = require('powercord/components');
 const { sleep } = require('powercord/util');
+
+const classes = getModule([ 'profileBadge18' ], false)
+const userLevel = getModule([ 'getUserLevel' ], false)
+
+const BadgeAssets = {
+  STAFF: '/assets/f62be1ec9bdd82d3d77158ad81830e68.svg',
+  PARTNER: '/assets/53828e0c0fb6676440ad11b5d2586241.svg',
+  HYPESQUAD: '/assets/f5354673c9cff61c1dcc70081ef774e5.svg',
+  HYPESQUAD_ONLINE_HOUSE_1: '/assets/995ecfdbdf94ad84dd4d802c104e4630.svg',
+  HYPESQUAD_ONLINE_HOUSE_2: '/assets/473dadec13ab7e90e209cc60fccb31c5.svg',
+  HYPESQUAD_ONLINE_HOUSE_3: '/assets/58f11abcf3c13812bff969baaeb84d82.svg',
+  BUG_HUNTER_LEVEL_1: '/assets/46f6a28f462889f1a36cfca2591fcade.svg',
+  BUG_HUNTER_LEVEL_2: '/assets/5c6bb5c4640972078fc993f1b5f503ce.svg',
+  EARLY_VERIFIED_DEVELOPER: '/assets/877dc8bece1590e63fac6d5a0cd2a225.svg',
+  EARLY_SUPPORTER: '/assets/d66ce47c4ab7817190af9544f97e98cc.svg',
+  CERTIFIED_MODERATOR: '/assets/2af69d4f9d2ff38a7cf76fab0907ea7a.svg',
+  PREMIUM: '/assets/e04ce699dcd2fd50d352a384511687a9.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_1: '/assets/1d3c9e1123aee11a325af328609d1274.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_2: '/assets/dd50d32cf4fee241b2fa022d8c0435ae.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_3: '/assets/7294cc730410a1caeceeca736f800b42.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_4: '/assets/496aa1174817ec391612f745dc8e0725.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_5: '/assets/ce54a4f8c0e133a6f2d60336e7acac7d.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_6: '/assets/c0c9db2de008e61a1a720581ca175fa1.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_7: '/assets/556158300f0dca136d3c902586ff1316.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_8: '/assets/ba38c1c57dfccb94127e53b7ac502a90.svg',
+  PREMIUM_GUILD_SUBSCRIPTION_LEVEL_9: '/assets/42ecb902decfc8e83a7446a0904b1e18.svg'
+}
 
 let noReq = false;
 let executing = false;
@@ -62,8 +89,68 @@ async function doGet (endpoint) {
     }
   }
 
-  setTimeout(() => (executing = false), 350);
+  setTimeout(() => (executing = false), 550);
   return res;
+}
+
+function Badge ({ kind, param }) {
+  let tooltip, asset
+
+  if (kind === 'staff') {
+    tooltip = Messages.STAFF_BADGE_TOOLTIP
+    asset = BadgeAssets.STAFF
+  }
+
+  if (kind === 'partner') {
+    tooltip = Messages.PARTNER_BADGE_TOOLTIP
+    asset = BadgeAssets.PARTNER
+  }
+
+  if (kind === 'certifiedPedo') {
+    tooltip = Messages.CERTIFIED_MODERATOR_BADGE_TOOLTIP
+    asset = BadgeAssets.CERTIFIED_MODERATOR
+  }
+
+  if (kind === 'hypesquad') {
+    tooltip = Messages.HYPESQUAD_BADGE_TOOLTIP
+    asset = BadgeAssets.HYPESQUAD
+  }
+
+  if (kind === 'hypesquadOnline') {
+    tooltip = Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: Messages[`HYPESQUAD_HOUSE_${param}`] })
+    asset = BadgeAssets[`HYPESQUAD_ONLINE_HOUSE_${param}`]
+  }
+
+  if (kind === 'hunter') {
+    tooltip = Messages.BUG_HUNTER_BADGE_TOOLTIP
+    asset = BadgeAssets[`BUG_HUNTER_LEVEL_${param}`]
+  }
+
+  if (kind === 'verifiedDev') {
+    tooltip = Messages.VERIFIED_DEVELOPER_BADGE_TOOLTIP
+    asset = BadgeAssets.EARLY_VERIFIED_DEVELOPER
+  }
+
+  if (kind === 'earlySupporter') {
+    tooltip = Messages.EARLY_SUPPORTER_TOOLTIP
+    asset = BadgeAssets.EARLY_SUPPORTER
+  }
+
+  if (kind === 'premium') {
+    tooltip = Messages.PREMIUM_BADGE_TOOLTIP.format({ date: new Date(param) })
+    asset = BadgeAssets.PREMIUM
+  }
+
+  if (kind === 'boosting') {
+    tooltip = Messages.PREMIUM_GUILD_SUBSCRIPTION_TOOLTIP.format({ date: new Date(param) })
+    asset = BadgeAssets[`PREMIUM_GUILD_SUBSCRIPTION_LEVEL_${userLevel.getUserLevel(param)}`]
+  }
+
+  return (
+    <Tooltip text={tooltip} delay={500}>
+      <img alt='' src={asset} className={classes.profileBadge18}/>
+    </Tooltip>
+  )
 }
 
 class Badges extends React.PureComponent {
@@ -104,139 +191,28 @@ class Badges extends React.PureComponent {
     if (!this.props.user) {
       return null;
     }
-    return <>
-      {this.props.getSetting('displayStaff', true) && (this.props.user.publicFlags & UserFlags.STAFF) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.STAFF_BADGE_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgeStaff}/>
-      </Tooltip>}
 
-      {this.props.getSetting('displayPartner', true) && (this.props.user.publicFlags & UserFlags.PARTNER) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.PARTNER_BADGE_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgePartner}/>
-      </Tooltip>}
+    const { getSetting, user } = this.props
+    const badges = [
+      getSetting('displayStaff', true) && (user.publicFlags & UserFlags.STAFF) !== 0 && { kind: 'staff' },
+      getSetting('displayPartner', true) && (user.publicFlags & UserFlags.PARTNER) !== 0 && { kind: 'partner' },
+      getSetting('displayCertifiedModerator', true) && (user.publicFlags & UserFlags.CERTIFIED_MODERATOR) !== 0 && { kind: 'certifiedPedo' },
+      getSetting('displayHypeSquad', true) && (user.publicFlags & UserFlags.HYPESQUAD) !== 0 && { kind: 'hypesquad' },
+      getSetting('displayHypeSquadOnline', true) && (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_1) !== 0 && { kind: 'hypesquadOnline', param: 1 },
+      getSetting('displayHypeSquadOnline', true) && (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_2) !== 0 && { kind: 'hypesquadOnline', param: 2 },
+      getSetting('displayHypeSquadOnline', true) && (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_3) !== 0 && { kind: 'hypesquadOnline', param: 3 },
+      getSetting('displayHunter', true) && (user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_1) !== 0 && { kind: 'hunter', param: 1 },
+      getSetting('displayHunter', true) && (user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_2) !== 0 && { kind: 'hunter', param: 2 },
+      getSetting('displayVerifiedBotDeveloper', true) && (user.publicFlags & UserFlags.VERIFIED_DEVELOPER) !== 0 && { kind: 'verifiedDev' },
+      getSetting('displayEarly', true) && (user.publicFlags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 && { kind: 'earlySupporter' },
+      getSetting('displayNitro', true) && this.state.premiumSince && { kind: 'premium', param: this.state.premiumSince },
+      getSetting('displayBoosting', true) && this.state.premiumGuildSince && { kind: 'boosting', param: this.state.premiumGuildSince },
+    ].filter(Boolean)
 
-      {this.props.getSetting('displayCertifiedModerator', true) && (this.props.user.publicFlags & UserFlags.CERTIFIED_MODERATOR) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.CERTIFIED_MODERATOR_BADGE_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgeCertifiedModerator}/>
-      </Tooltip>}
-
-      {this.props.getSetting('displayHypeSquad', true) && (this.props.user.publicFlags & UserFlags.HYPESQUAD) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.HYPESQUAD_BADGE_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgeHypesquad}/>
-      </Tooltip>}
-
-      {this.props.getSetting('displayHypeSquadOnline', true) && <>
-        {(this.props.user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_1) !== 0 &&
-        <Tooltip
-          text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_1 })}
-          delay={500}
-        >
-          <div
-            className={this.props.classes[`profileBadgeHypeSquadOnlineHouse1${this.props.hsWinners === 1 ? 'Winner' : ''}`]}/>
-        </Tooltip>}
-
-        {(this.props.user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_2) !== 0 &&
-        <Tooltip
-          text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_2 })}
-          delay={500}
-        >
-          <div
-            className={this.props.classes[`profileBadgeHypeSquadOnlineHouse2${this.props.hsWinners === 2 ? 'Winner' : ''}`]}/>
-        </Tooltip>}
-
-        {(this.props.user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_3) !== 0 &&
-        <Tooltip
-          text={this.props.i18n.Messages.HYPESQUAD_ONLINE_BADGE_TOOLTIP.format({ houseName: this.props.i18n.Messages.HYPESQUAD_HOUSE_3 })}
-          delay={500}
-        >
-          <div
-            className={this.props.classes[`profileBadgeHypeSquadOnlineHouse3${this.props.hsWinners === 3 ? 'Winner' : ''}`]}/>
-        </Tooltip>}
-      </>}
-
-      {this.props.getSetting('displayHunter', true) && <>
-        {(this.props.user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_1) !== 0 &&
-        <Tooltip
-          text={this.props.i18n.Messages.BUG_HUNTER_BADGE_TOOLTIP}
-          delay={500}
-        >
-          <div className={this.props.classes.profileBadgeBugHunterLevel1}/>
-        </Tooltip>}
-        {(this.props.user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_2) !== 0 &&
-        <Tooltip
-          text={this.props.i18n.Messages.BUG_HUNTER_BADGE_TOOLTIP}
-          delay={500}
-        >
-          <div className={this.props.classes.profileBadgeBugHunterLevel2}/>
-        </Tooltip>}
-      </>}
-
-      {this.props.getSetting('displayVerifiedBotDeveloper', true) && (this.props.user.publicFlags & UserFlags.VERIFIED_DEVELOPER) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.VERIFIED_DEVELOPER_BADGE_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgeVerifiedDeveloper}/>
-      </Tooltip>}
-
-      {this.props.getSetting('displayEarly', true) && (this.props.user.publicFlags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 &&
-      <Tooltip
-        text={this.props.i18n.Messages.EARLY_SUPPORTER_TOOLTIP}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgeEarlySupporter}/>
-      </Tooltip>}
-
-      {this.props.getSetting('displayNitro', true) && this.state.premiumSince &&
-      <Tooltip
-        text={this.props.i18n.Messages.PREMIUM_BADGE_TOOLTIP.format({ date: new Date(this.state.premiumSince) })}
-        delay={500}
-      >
-        <div className={this.props.classes.profileBadgePremium}/>
-      </Tooltip>}
-
-      {this.props.getSetting('displayBoosting', true) && this.state.premiumGuildSince &&
-      <Tooltip
-        text={this.props.i18n.Messages.PREMIUM_GUILD_SUBSCRIPTION_TOOLTIP.format({ date: new Date(this.state.premiumGuildSince) })}
-        delay={500}
-      >
-        <div
-          className={this.props.classes[`profileGuildSubscriberlvl${this.props.userLevelCompute.getUserLevel(this.state.premiumGuildSince)}`]}/>
-      </Tooltip>}
-    </>;
+    return badges.map((b) => React.createElement(Badge, b))
   }
 }
 
 Badges.cache = {};
-let connectedModule = null;
-module.exports = (props) => <AsyncComponent
-  _provider={async () => {
-    if (!connectedModule) {
-      const i18n = await getModule([ 'Messages' ]);
-      const classes = await getModule([ 'profileBadgeStaff' ]);
-      const userLevelCompute = await getModule([ 'getUserLevel' ]);
-      const hsWinners = await getModule(e => e.getExperimentId && e.getExperimentId().includes('hypesquad_winner'));
-
-      connectedModule = Flux.connectStores([ hsWinners ], () => ({
-        i18n,
-        classes,
-        userLevelCompute,
-        hsWinners: hsWinners.getExperimentDescriptor() ? hsWinners.bucket : 0
-      }))(Badges);
-    }
-    return connectedModule;
-  }}
-  {...props}
-/>;
+Badges.Badge = Badge;
+module.exports = Badges
