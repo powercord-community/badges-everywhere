@@ -57,14 +57,10 @@ const BadgeAssets = {
 }
 
 let noReq = false;
-let executing = false;
+let executing = 0;
 async function doGet (endpoint) {
-  // eslint-disable-next-line no-unmodified-loop-condition
-  while (executing) {
-    await sleep(10);
-  }
+  await sleep(666 * ++executing);
 
-  executing = true;
   let res;
   while (!res) {
     if (noReq) {
@@ -89,7 +85,7 @@ async function doGet (endpoint) {
     }
   }
 
-  setTimeout(() => (executing = false), 550);
+  executing--;
   return res;
 }
 
@@ -184,6 +180,8 @@ class Badges extends React.PureComponent {
         premiumSince: res.body.premium_since,
         premiumGuildSince: res.body.premium_guild_since
       };
+
+      this.setState(Badges.cache[this.props.user.id]);
     }
   }
 
