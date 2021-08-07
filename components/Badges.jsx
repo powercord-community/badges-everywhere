@@ -56,29 +56,18 @@ const BadgeAssets = {
   PREMIUM_GUILD_SUBSCRIPTION_LEVEL_9: '/assets/42ecb902decfc8e83a7446a0904b1e18.svg'
 }
 
-let noReq = false;
 let executing = 0;
 async function doGet (endpoint) {
-  await sleep(666 * ++executing);
+  await sleep(1e3 * executing++);
 
-  let res;
-  while (!res) {
-    if (noReq) {
-      res = { body: {} };
-      break;
-    }
+  let res, tries = 0;
+  while (!res && tries < 5) {
+    tries++
     try {
       res = await get(endpoint);
     } catch (e) {
       if (e.status === 429) {
-        if (!e.body) {
-          console.log('Encountered hard cloudflare limit. Disabling requests.');
-          noReq = true;
-          res = { body: {} };
-          break;
-        } else {
-          await sleep(e.body.retry_after);
-        }
+        await sleep(5e3);
       } else {
         res = { body: {} };
       }
