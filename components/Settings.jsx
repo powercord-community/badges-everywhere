@@ -50,6 +50,13 @@ module.exports = class Settings extends React.PureComponent {
           Messages
         </SwitchItem>
         <SwitchItem
+          note='Display badges in threads preview in main chat.'
+          value={this.props.getSetting('threads-preview', true)}
+          onChange={() => this.props.toggleSetting('threads-preview', true)}
+        >
+          Threads
+        </SwitchItem>
+        <SwitchItem
           note='Display badges in the list of members.'
           value={this.props.getSetting('members', true)}
           onChange={() => this.props.toggleSetting('members')}

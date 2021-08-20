@@ -25,7 +25,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.name-uJV0GL, .header-23xsNx, .repliedMessage-VokQwo, .nameAndDecorators-5FJ2dg, .morebadges {
+.name-uJV0GL, .header-23xsNx, .repliedMessage-VokQwo, .nameAndDecorators-5FJ2dg, .threadMessageAccessory-1pYyA-, .morebadges {
   .badges {
     display: flex;
     align-items: center;
@@ -33,10 +33,10 @@
     margin-left: 3px;
 
     div:not(.overflow-WK9Ogt) {
-      height: 16px;
-      width: 16px;
+      height: 20px;
+      width: 20px;
       flex-shrink: 0;
-      background-size: 16px 16px;
+      background-size: 20px 20px;
       background-repeat: no-repeat;
       background-position: center;
     }
@@ -61,7 +61,7 @@
   margin-left: 1px;
   margin-right: 1px;
   height: 16px;
-  top: 3px;
+  top: 5px;
 
   div {
     width: 20px;
@@ -76,6 +76,11 @@
 
 .compact-T3H92H .header-23xsNx .badges {
   left: -4px;
+}
+
+.threadMessageAccessory-1pYyA- .badges {
+  margin-left: 0;
+  margin-right: 8px;
 }
 
 .morebadges .badges {

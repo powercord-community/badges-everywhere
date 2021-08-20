@@ -96,15 +96,14 @@ module.exports = class BadgesEverywhere extends Plugin {
     }
 
     const MessageAuthorName = await getModule((m) => d(m)?.toString().includes('userOverride'))
-    inject('morebadges-messages', MessageAuthorName, 'default', ([ { message: { author } } ], res) => {
-      if (!_this.settings.get('messages', true)) {
+    inject('morebadges-messages', MessageAuthorName, 'default', ([ { message: { author }, renderPopout, userOverride } ], res) => {
+      if (!_this.settings.get(renderPopout ? 'messages' : 'threads-preview', true)) {
         return res;
       }
 
-
       res.props.children.splice(2, 0,
         React.createElement('div', { className: 'badges' },
-          React.createElement(this.ConnectedBadges, { user: author })
+          React.createElement(this.ConnectedBadges, { user: userOverride || author })
         )
       )
 
