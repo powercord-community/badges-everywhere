@@ -29,9 +29,6 @@ const { React, getModule, http: { get }, constants: { Endpoints, UserFlags }, i1
 const { Tooltip } = require('powercord/components');
 const { sleep } = require('powercord/util');
 
-const classes = getModule([ 'profileBadge18' ], false)
-const userLevel = getModule([ 'getUserLevel' ], false)
-
 const BadgeAssets = {
   STAFF: '/assets/f62be1ec9bdd82d3d77158ad81830e68.svg',
   PARTNER: '/assets/53828e0c0fb6676440ad11b5d2586241.svg',
@@ -78,6 +75,7 @@ async function doGet (endpoint) {
   return res;
 }
 
+const userLevel = getModule([ 'getUserLevel' ], false)
 function Badge ({ kind, param }) {
   let tooltip, asset
 
@@ -133,7 +131,7 @@ function Badge ({ kind, param }) {
 
   return (
     <Tooltip text={tooltip} delay={500}>
-      <img alt='' src={asset} className={classes.profileBadge18}/>
+      <img alt='' src={asset} className='profileBadge18-NVHzY4 profileBadge-2niAfJ desaturate-qhyunI'/>
     </Tooltip>
   )
 }
