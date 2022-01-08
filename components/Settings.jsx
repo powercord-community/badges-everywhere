@@ -37,7 +37,7 @@ module.exports = class Settings extends React.PureComponent {
 
   render () {
     const TODAY = new Date()
-    const BOOSTING = Object.values(constants.UserPremiumGuildSubscriptionMonths)
+    const BOOSTING = Object.values(constants.MonthsRequiredForAppliedGuildBoostLevel)
       .map((m) => new Date().setUTCMonth(TODAY.getUTCMonth() - m + 1))
 
     return (
@@ -138,7 +138,7 @@ module.exports = class Settings extends React.PureComponent {
             onChange={() => this.props.toggleSetting('displayVerifiedBotDeveloper', true)}
           >
             <div className='badges'>
-              <span>Bot Developer</span>
+              <span>Early Bot Developer</span>
               <Badge kind='verifiedDev'/>
             </div>
           </SwitchItem>

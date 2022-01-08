@@ -80,10 +80,17 @@ module.exports = class BadgesEverywhere extends Plugin {
       if (!_this.settings.get('dms', true)) {
         return res;
       }
-      res.props.name = React.createElement('div', { className: 'badges' }, [
-        React.createElement('span', null, res.props.name),
-        React.createElement(_this.ConnectedBadges, { user: this.props.user })
-      ]);
+
+      const ogChildren = res.props.children
+      res.props.children = (props) => {
+        const res = ogChildren(props)
+        res.props.name = React.createElement('div', { className: 'badges' }, [
+          React.createElement('span', null, res.props.name),
+          React.createElement(_this.ConnectedBadges, { user: this.props.user })
+        ]);
+        return res
+      }
+
       return res;
     });
   }

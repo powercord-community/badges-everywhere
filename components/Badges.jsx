@@ -55,7 +55,7 @@ const BadgeAssets = {
 
 let executing = 0;
 async function doGet (endpoint) {
-  await sleep(1e3 * executing++);
+  await sleep(1500 * executing++);
 
   let res, tries = 0;
   while (!res && tries < 5) {
