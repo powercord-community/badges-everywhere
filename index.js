@@ -53,41 +53,62 @@ module.exports = class BadgesEverywhere extends Plugin {
     powercord.api.settings.unregisterSettings('morebadges');
     uninject('morebadges-dm');
     uninject('morebadges-members');
+    uninject('morebadges-members-1');
     uninject('morebadges-messages');
   }
 
   async _injectMembers () {
     const _this = this;
-    const MemberListItem = await getModuleByDisplayName('MemberListItem');
-    inject('morebadges-members', MemberListItem.prototype, 'renderDecorators', function (args, res) {
-      if (!_this.settings.get('members', true)) {
-        return res;
-      }
+    const MemberListItem =
+        await getModuleByDisplayName('MemberListItem') ||
+        getModule(['AVATAR_DECORATION_PADDING'], false)?.default;
+    const MemberListItemTarget = {
+        module: MemberListItem.prototype || MemberListItem,
+        method: MemberListItem.prototype ? 'renderDecorators' : 'type'
+    }; // Thanks powercord-stafftags
 
-      res.props.children.unshift(
-        React.createElement('div', { className: `badges` },
-          React.createElement(_this.ConnectedBadges, { user: this.props.user })
-        )
-      );
+    inject('morebadges-members-1', MemberListItemTarget.module, MemberListItemTarget.method, function (_, res) {
+      const MemberListItem = res.type;
+      inject('morebadges-members', MemberListItem.prototype, 'renderDecorators', function (args, res) {
+        if (!_this.settings.get('members', true)) {
+          return res;
+        }
+
+        res.props.children.push(
+          React.createElement('div', { className: `badges` },
+            React.createElement(_this.ConnectedBadges, { user: this.props.user })
+          )
+        );
+        return res;
+        
+      });
+
+      uninject('morebadges-members-1');
       return res;
-    });
+    })
   }
 
   async _injectDMs () {
     const _this = this;
     const PrivateChannel = await getModuleByDisplayName('PrivateChannel');
+
     inject('morebadges-dm', PrivateChannel.prototype, 'render', function (args, res) {
       if (!_this.settings.get('dms', true)) {
         return res;
       }
-
       const ogChildren = res.props.children
       res.props.children = (props) => {
-        const res = ogChildren(props)
-        res.props.name = React.createElement('div', { className: 'badges' }, [
-          React.createElement('span', null, res.props.name),
-          React.createElement(_this.ConnectedBadges, { user: this.props.user })
-        ]);
+        const res = ogChildren(props);
+        if (res.props.children.props.children[0].props.children.props.decorators)
+          res.props.children.props.children[0].props.children.props.decorators.unshift(React.createElement('div', { className: 'badges' }, [
+            React.createElement('span', null, res.props.name),
+            React.createElement(_this.ConnectedBadges, { user: this.props.user })
+          ]));
+        else
+          res.props.children.props.children[0].props.children.props.decorators = [React.createElement('div', { className: 'badges' }, [
+            React.createElement('span', null, res.props.name),
+            React.createElement(_this.ConnectedBadges, { user: this.props.user })
+          ])];
         return res
       }
 
@@ -108,7 +129,7 @@ module.exports = class BadgesEverywhere extends Plugin {
         return res;
       }
 
-      res.props.children.splice(2, 0,
+      res.props.children.splice(7, 0,
         React.createElement('div', { className: 'badges' },
           React.createElement(this.ConnectedBadges, { user: userOverride || author })
         )
