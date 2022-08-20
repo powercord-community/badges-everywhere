@@ -99,16 +99,21 @@ module.exports = class BadgesEverywhere extends Plugin {
       const ogChildren = res.props.children
       res.props.children = (props) => {
         const res = ogChildren(props);
-        if (res.props.children.props.children[0].props.children.props.decorators)
-          res.props.children.props.children[0].props.children.props.decorators.unshift(React.createElement('div', { className: 'badges' }, [
+        let stuff = findInReactTree(res, m => m && m.hasOwnProperty('decorators'));
+        if (stuff.decorators) {
+          if (!Array.isArray(stuff.decorators)) { // Support for system user people. Discord >.>
+            stuff.decorators = new Array(stuff.decorators);
+          }
+          stuff.decorators.unshift(React.createElement('div', { className: 'badges' }, [
             React.createElement('span', null, res.props.name),
             React.createElement(_this.ConnectedBadges, { user: this.props.user })
           ]));
-        else
-          res.props.children.props.children[0].props.children.props.decorators = [React.createElement('div', { className: 'badges' }, [
+        } else {
+          stuff.decorators = [React.createElement('div', { className: 'badges' }, [
             React.createElement('span', null, res.props.name),
             React.createElement(_this.ConnectedBadges, { user: this.props.user })
           ])];
+        }
         return res
       }
 
