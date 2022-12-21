@@ -1,7 +1,18 @@
 {
+  "id": "dev.kingfish.BadgesEverywhere",
   "name": "Badges Everywhere",
-  "version": "1.3.0",
-  "description": "Adds badges to other locations like messages, members list, ...",
-  "author": "Cynthia",
-  "license": "BSD-3-Clause"
+  "description": "Puts a user's badges in other places",
+  "author": {
+    "name": "King Fish",
+    "discordID": "499400512559382538",
+    "github": "12944qwerty"
+  },
+  "version": "1.0.0",
+  "updater": {
+    "type": "github",
+    "id": "qwerty-mods/badges-everywhere"
+  },
+  "license": "MIT",
+  "type": "replugged-plugin",
+  "renderer": "src/index.ts"
 }

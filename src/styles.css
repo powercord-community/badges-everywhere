@@ -1,0 +1,61 @@
+/* Taken from Cynthia's powercord badges-everywhere then compiled the scss
+ * I will change this, but I'm too lazy to understand and change atm
+ */
+
+.name-3Vmqxm .badges, .header-2jRmjb .badges, .repliedMessage-3Z6XBG .badges, .nameAndDecorators-3ERwy2 .badges, .nameAndDecorators-2A8Bbk .badges, .threadMessageAccessory-2W9mjC .badges, .morebadges .badges {
+  display: flex;
+  align-items: center;
+  background-color: transparent !important;
+  margin-left: 3px;
+}
+.name-3Vmqxm .badges div:not(.overflow-1wOqNV), .header-2jRmjb .badges div:not(.overflow-1wOqNV), .repliedMessage-3Z6XBG .badges div:not(.overflow-1wOqNV), .nameAndDecorators-3ERwy2 .badges div:not(.overflow-1wOqNV), .nameAndDecorators-2A8Bbk .badges div:not(.overflow-1wOqNV), .threadMessageAccessory-2W9mjC .badges div:not(.overflow-1wOqNV), .morebadges .badges div:not(.overflow-1wOqNV) {
+  height: 20px;
+  width: 20px;
+  flex-shrink: 0;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.name-3Vmqxm .badges div:not([class]), .header-2jRmjb .badges div:not([class]), .repliedMessage-3Z6XBG .badges div:not([class]), .nameAndDecorators-3ERwy2 .badges div:not([class]), .nameAndDecorators-2A8Bbk .badges div:not([class]), .threadMessageAccessory-2W9mjC .badges div:not([class]), .morebadges .badges div:not([class]) {
+  margin-left: 3px;
+}
+.name-3Vmqxm .badges:empty, .header-2jRmjb .badges:empty, .repliedMessage-3Z6XBG .badges:empty, .nameAndDecorators-3ERwy2 .badges:empty, .nameAndDecorators-2A8Bbk .badges:empty, .threadMessageAccessory-2W9mjC .badges:empty, .morebadges .badges:empty {
+  display: none;
+}
+.badges {
+  user-select: none;
+}
+.header-2jRmjb .badges {
+  position: relative;
+  display: inline-flex;
+  margin-left: 1px;
+  margin-right: 1px;
+  height: 16px;
+  top: 5px;
+}
+.header-2jRmjb .badges div {
+  width: 20px;
+  height: 20px;
+}
+.repliedMessage-3Z6XBG .badges {
+  margin-right: 0.45rem;
+  margin-left: -0.15rem;
+}
+.compact-2Nkcau .header-2jRmjb .badges {
+  left: -4px;
+}
+.threadMessageAccessory-2W9mjC .badges {
+  margin-left: 0;
+  margin-right: 8px;
+}
+.morebadges .badges span {
+  margin-right: 10px;
+}
+.morebadges .badges div {
+  width: 22px;
+  height: 22px;
+}
+.badges img {
+  width: 100%;
+  height: 100%;
+}
