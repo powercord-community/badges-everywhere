@@ -7,6 +7,8 @@ import badges from "./Badges";
 
 const injector = new Injector();
 
+type premiumProfile = { premiumSince: string, premiumGuildSince: string } & Record<string, string>
+
 export async function start(): Promise<void> {
   const tooltipMod = await webpack.waitForModule<Record<string, React.FC>>(
     webpack.filters.bySource(/shouldShowTooltip:!1/)
@@ -18,6 +20,7 @@ export async function start(): Promise<void> {
   }
   const Messages = webpack.getByProps("Messages", "getLanguages")?.Messages as Record<string, unknown>;
   const Badges = badges(Tooltip, Messages);
+  const { getUserProfile } = await webpack.waitForModule<Record<string, (id: string) => premiumProfile>>(webpack.filters.byProps('getUserProfile'));
 
   const mod = await webpack.waitForModule<{
     Z: (...args: Array<{
@@ -30,7 +33,7 @@ export async function start(): Promise<void> {
 
   injector.after(mod, 'Z', ([ args ], res: React.ReactElement) => {
     const { author } = args.message;
-    res?.props?.children[3]?.props?.children?.splice(1, 0, React.createElement(Badges, {user: author}));
+    res?.props?.children[3]?.props?.children?.splice(1, 0, React.createElement(Badges, {user: author, premium: getUserProfile(author.id)}));
 
     return res;
   })

@@ -47,13 +47,9 @@ type userFlags = {
   PREMIUM_EARLY_SUPPORTER: number;
 }
 
-type endpoints = {
-  USER_PROFILE: string;
-}
-
 const constants = webpack.getBySource("ACTIVE_DEVELOPER:1") as types.ModuleExports
 const UserFlags = webpack.getExportsForProps(constants, ["ACTIVE_DEVELOPER", "HYPESQUAD_ONLINE_HOUSE_1"]) as userFlags;
-// const Endpoints = webpack.getExportsForProps(constants, ["USER_PROFILE"]) as endpoints;
+const { profileBadge18 } = webpack.getByProps('profileBadge18') as Record<string, string>;
 
 export function badge(args: { kind: string, param?: number | string }, Tooltip: TooltipType, Messages: Record<string, string & {format: (args: unknown) => string}>): JSX.Element {
   let tooltip: string, asset: string;
@@ -119,7 +115,7 @@ export function badge(args: { kind: string, param?: number | string }, Tooltip: 
     <Tooltip text={tooltip!}>
       {(props: React.HTMLAttributes<HTMLSpanElement>) => (
         <span {...props} role="button" tabIndex={0}>
-          <img alt='' src={asset} className='profileBadge18-NVHzY4 profileBadge-2niAfJ desaturate-qhyunI'/>
+          <img alt='' src={asset} className={profileBadge18}/>
         </span>
       )}
     </Tooltip>
@@ -132,10 +128,9 @@ export const cache: Record<string, User> = {}
 
 // }
 
-function Badges(Tooltip: TooltipType, Messages: {}) {
-  return (props: { user: User }): JSX.Element => {
-    // const [ premium, setPremium ] = React.useState({premiumSince: })
-    const { user } = props;
+export default function Badges(Tooltip: TooltipType, Messages: {}) {
+  return (props: { user: User, premium: { premiumSince: string, premiumGuildSince: string } & Record<string, string> }): JSX.Element => {
+    const { user, premium } = props;
     if (!Tooltip) {
       console.log("Tooltip not found");
       return <></>;
@@ -154,8 +149,8 @@ function Badges(Tooltip: TooltipType, Messages: {}) {
       (user.publicFlags & UserFlags.VERIFIED_DEVELOPER) !== 0 && { kind: 'verifiedDev' },
       (user.publicFlags & UserFlags.ACTIVE_DEVELOPER) !== 0 && { kind: 'activeDev' },
       (user.publicFlags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 && { kind: 'earlySupporter' },
-      // this.state.premiumSince && { kind: 'premium', param: this.state.premiumSince },
-      // this.state.premiumGuildSince && { kind: 'boosting', param: this.state.premiumGuildSince },
+      premium && { kind: 'premium', param: premium.premiumSince },
+      premium && { kind: 'boosting', param: premium.premiumGuildSince },
     ].filter(Boolean);
 
     return <div className="badges">
@@ -163,5 +158,3 @@ function Badges(Tooltip: TooltipType, Messages: {}) {
     </div>
   }
 }
-
-export default Badges;
