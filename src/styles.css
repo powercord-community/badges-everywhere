@@ -2,13 +2,25 @@
  * I will change this, but I'm too lazy to understand and change atm
  */
 
-.name-3Vmqxm .badges, .header-2jRmjb .badges, .repliedMessage-3Z6XBG .badges, .nameAndDecorators-3ERwy2 .badges, .nameAndDecorators-2A8Bbk .badges, .threadMessageAccessory-2W9mjC .badges, .morebadges .badges {
+.name-3Vmqxm .badges,
+.header-2jRmjb .badges,
+.repliedMessage-3Z6XBG .badges,
+.nameAndDecorators-3ERwy2 .badges,
+.nameAndDecorators-2A8Bbk .badges,
+.threadMessageAccessory-2W9mjC .badges,
+.morebadges .badges {
   display: flex;
   align-items: center;
   background-color: transparent !important;
   margin-left: 3px;
 }
-.name-3Vmqxm .badges div:not(.overflow-1wOqNV), .header-2jRmjb .badges div:not(.overflow-1wOqNV), .repliedMessage-3Z6XBG .badges div:not(.overflow-1wOqNV), .nameAndDecorators-3ERwy2 .badges div:not(.overflow-1wOqNV), .nameAndDecorators-2A8Bbk .badges div:not(.overflow-1wOqNV), .threadMessageAccessory-2W9mjC .badges div:not(.overflow-1wOqNV), .morebadges .badges div:not(.overflow-1wOqNV) {
+.name-3Vmqxm .badges div:not(.overflow-1wOqNV),
+.header-2jRmjb .badges div:not(.overflow-1wOqNV),
+.repliedMessage-3Z6XBG .badges div:not(.overflow-1wOqNV),
+.nameAndDecorators-3ERwy2 .badges div:not(.overflow-1wOqNV),
+.nameAndDecorators-2A8Bbk .badges div:not(.overflow-1wOqNV),
+.threadMessageAccessory-2W9mjC .badges div:not(.overflow-1wOqNV),
+.morebadges .badges div:not(.overflow-1wOqNV) {
   height: 20px;
   width: 20px;
   flex-shrink: 0;
@@ -16,10 +28,22 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-.name-3Vmqxm .badges div:not([class]), .header-2jRmjb .badges div:not([class]), .repliedMessage-3Z6XBG .badges div:not([class]), .nameAndDecorators-3ERwy2 .badges div:not([class]), .nameAndDecorators-2A8Bbk .badges div:not([class]), .threadMessageAccessory-2W9mjC .badges div:not([class]), .morebadges .badges div:not([class]) {
+.name-3Vmqxm .badges div:not([class]),
+.header-2jRmjb .badges div:not([class]),
+.repliedMessage-3Z6XBG .badges div:not([class]),
+.nameAndDecorators-3ERwy2 .badges div:not([class]),
+.nameAndDecorators-2A8Bbk .badges div:not([class]),
+.threadMessageAccessory-2W9mjC .badges div:not([class]),
+.morebadges .badges div:not([class]) {
   margin-left: 3px;
 }
-.name-3Vmqxm .badges:empty, .header-2jRmjb .badges:empty, .repliedMessage-3Z6XBG .badges:empty, .nameAndDecorators-3ERwy2 .badges:empty, .nameAndDecorators-2A8Bbk .badges:empty, .threadMessageAccessory-2W9mjC .badges:empty, .morebadges .badges:empty {
+.name-3Vmqxm .badges:empty,
+.header-2jRmjb .badges:empty,
+.repliedMessage-3Z6XBG .badges:empty,
+.nameAndDecorators-3ERwy2 .badges:empty,
+.nameAndDecorators-2A8Bbk .badges:empty,
+.threadMessageAccessory-2W9mjC .badges:empty,
+.morebadges .badges:empty {
   display: none;
 }
 .badges {
