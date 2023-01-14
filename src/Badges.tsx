@@ -1,11 +1,5 @@
-import React from "react";
-import { types, webpack } from "replugged";
+import { components, types, webpack } from "replugged";
 import { User } from "discord-types/general";
-
-type TooltipType = React.FC<{
-  text: string;
-  children: (props: React.HTMLAttributes<HTMLSpanElement>) => JSX.Element;
-}>;
 
 const BadgeAssets: Record<string, string> = {
   STAFF: "/assets/f62be1ec9bdd82d3d77158ad81830e68.svg",
@@ -56,7 +50,6 @@ const { profileBadge18 } = webpack.getByProps("profileBadge18") as Record<string
 
 export function badge(
   args: { kind: string; param?: number | string },
-  Tooltip: TooltipType,
   Messages: Record<string, string & { format: (args: unknown) => string }>,
 ): JSX.Element {
   let tooltip: string, asset: string;
@@ -120,13 +113,11 @@ export function badge(
   }
 
   return (
-    <Tooltip text={tooltip!}>
-      {(props: React.HTMLAttributes<HTMLSpanElement>) => (
-        <span {...props} role="button" tabIndex={0}>
-          <img alt="" src={asset} className={profileBadge18} />
-        </span>
-      )}
-    </Tooltip>
+    <components.Tooltip text={tooltip!}>
+      <span role="button" tabIndex={0}>
+        <img alt="" src={asset!} className={profileBadge18} />
+      </span>
+    </components.Tooltip>
   );
 }
 
@@ -136,16 +127,12 @@ export const cache: Record<string, User> = {};
 
 // }
 
-export default function Badges(Tooltip: TooltipType, Messages: {}) {
+export default function Badges(Messages: {}) {
   return (props: {
     user: User;
     premium: { premiumSince: string; premiumGuildSince: string } & Record<string, string>;
   }): JSX.Element => {
     const { user, premium } = props;
-    if (!Tooltip) {
-      console.log("Tooltip not found");
-      return <></>;
-    }
 
     const badges = [
       (user.publicFlags & UserFlags.STAFF) !== 0 && { kind: "staff" },
@@ -173,6 +160,6 @@ export default function Badges(Tooltip: TooltipType, Messages: {}) {
       premium && { kind: "boosting", param: premium.premiumGuildSince },
     ].filter(Boolean);
 
-    return <div className="badges">{badges.map((b) => b && badge(b, Tooltip, Messages))}</div>;
+    return <div className="badges">{badges.map((b) => b && badge(b, Messages))}</div>;
   };
 }

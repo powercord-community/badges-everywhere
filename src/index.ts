@@ -10,20 +10,11 @@ const injector = new Injector();
 type premiumProfile = { premiumSince: string; premiumGuildSince: string } & Record<string, string>;
 
 export async function start(): Promise<void> {
-  const tooltipMod = await webpack.waitForModule<Record<string, React.FC>>(
-    webpack.filters.bySource(/shouldShowTooltip:!1/),
-  );
-  const Tooltip =
-    tooltipMod && webpack.getFunctionBySource<React.FC>(/shouldShowTooltip:!1/, tooltipMod);
-  if (!Tooltip) {
-    console.error("Failed to find Tooltip component");
-    return;
-  }
   const Messages = webpack.getByProps("Messages", "getLanguages")?.Messages as Record<
     string,
     unknown
   >;
-  const Badges = badges(Tooltip, Messages);
+  const Badges = badges(Messages);
   const { getUserProfile } = await webpack.waitForModule<
     Record<string, (id: string) => premiumProfile>
   >(webpack.filters.byProps("getUserProfile"));
