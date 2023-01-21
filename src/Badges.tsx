@@ -46,7 +46,7 @@ const UserFlags = webpack.getExportsForProps(constants, [
   "ACTIVE_DEVELOPER",
   "HYPESQUAD_ONLINE_HOUSE_1",
 ]) as userFlags;
-const { profileBadge18 } = webpack.getByProps("profileBadge18") as Record<string, string>;
+const { profileBadge24 } = webpack.getByProps("profileBadge24") as Record<string, string>;
 
 export function badge(
   args: { kind: string; param?: number | string },
@@ -115,7 +115,7 @@ export function badge(
   return (
     <components.Tooltip text={tooltip!}>
       <span role="button" tabIndex={0}>
-        <img alt="" src={asset!} className={profileBadge18} />
+        <img alt="" src={asset!} className={profileBadge24} />
       </span>
     </components.Tooltip>
   );
@@ -160,6 +160,18 @@ export default function Badges(Messages: {}) {
       premium && { kind: "boosting", param: premium.premiumGuildSince },
     ].filter(Boolean);
 
-    return <div className="badges">{badges.map((b) => b && badge(b, Messages))}</div>;
+    return (
+      <div
+        className="badges"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          verticalAlign: "top",
+          position: "relative",
+          top: "-1px",
+        }}>
+        {badges.map((b) => b && badge(b, Messages))}
+      </div>
+    );
   };
 }

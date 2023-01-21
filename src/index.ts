@@ -1,6 +1,5 @@
 import { Injector, common, webpack } from "replugged";
 import { Channel, Message, User } from "discord-types/general";
-import "./styles.css";
 const { React } = common;
 
 import badges from "./Badges";
