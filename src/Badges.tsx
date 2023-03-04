@@ -130,7 +130,7 @@ export const cache: Record<string, User> = {};
 export default function Badges(Messages: {}) {
   return (props: {
     user: User;
-    premium: { premiumSince: string; premiumGuildSince: string } & Record<string, string>;
+    premium: { premiumSince?: string; premiumGuildSince?: string } & Record<string, string>;
   }): JSX.Element => {
     const { user, premium } = props;
 
@@ -156,8 +156,8 @@ export default function Badges(Messages: {}) {
       (user.publicFlags & UserFlags.VERIFIED_DEVELOPER) !== 0 && { kind: "verifiedDev" },
       (user.publicFlags & UserFlags.ACTIVE_DEVELOPER) !== 0 && { kind: "activeDev" },
       (user.publicFlags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 && { kind: "earlySupporter" },
-      premium && { kind: "premium", param: premium.premiumSince },
-      premium && { kind: "boosting", param: premium.premiumGuildSince },
+      premium?.premiumSince && { kind: "premium", param: premium.premiumSince },
+      premium?.premiumGuildSince && { kind: "boosting", param: premium.premiumGuildSince },
     ].filter(Boolean);
 
     return (
