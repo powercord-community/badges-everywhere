@@ -1,10 +1,23 @@
-import { Injector, common, webpack } from "replugged";
+import { Injector, common, settings, webpack } from "replugged";
 import { Channel, Message, User } from "discord-types/general";
 const { React } = common;
 
 import badges from "./Badges";
+export { Settings } from "./Settings";
 
 const injector = new Injector();
+
+interface Settings {
+  staff?: boolean;
+  partner?: boolean;
+  moderator?: boolean;
+  hypesquad?: boolean;
+  bughunter?: boolean;
+  developer?: boolean;
+  earlySupporter?: boolean;
+  premium?: boolean;
+}
+export const cfg = await settings.init<Settings>("dev.kingfish.BadgesEverywhere");
 
 type premiumProfile = { premiumSince: string; premiumGuildSince: string } & Record<string, string>;
 

@@ -1,5 +1,6 @@
 import { components, types, webpack } from "replugged";
 import { User } from "discord-types/general";
+import { cfg } from ".";
 
 const BadgeAssets: Record<string, string> = {
   STAFF: "/assets/f62be1ec9bdd82d3d77158ad81830e68.svg",
@@ -123,10 +124,6 @@ export function badge(
 
 export const cache: Record<string, User> = {};
 
-// function fetchBadges(id: string): {premiumSince: unknown, premiumGuildSince: unknown} {
-
-// }
-
 export default function Badges(Messages: {}) {
   return (props: {
     user: User;
@@ -135,29 +132,42 @@ export default function Badges(Messages: {}) {
     const { user, premium } = props;
 
     const badges = [
-      (user.publicFlags & UserFlags.STAFF) !== 0 && { kind: "staff" },
-      (user.publicFlags & UserFlags.PARTNER) !== 0 && { kind: "partner" },
-      (user.publicFlags & UserFlags.CERTIFIED_MODERATOR) !== 0 && { kind: "certifiedPedo" },
-      (user.publicFlags & UserFlags.HYPESQUAD) !== 0 && { kind: "hypesquad" },
-      (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_1) !== 0 && {
-        kind: "hypesquadOnline",
-        param: 1,
-      },
-      (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_2) !== 0 && {
-        kind: "hypesquadOnline",
-        param: 2,
-      },
-      (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_3) !== 0 && {
-        kind: "hypesquadOnline",
-        param: 3,
-      },
-      (user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_1) !== 0 && { kind: "hunter", param: 1 },
-      (user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_2) !== 0 && { kind: "hunter", param: 2 },
-      (user.publicFlags & UserFlags.VERIFIED_DEVELOPER) !== 0 && { kind: "verifiedDev" },
-      (user.publicFlags & UserFlags.ACTIVE_DEVELOPER) !== 0 && { kind: "activeDev" },
-      (user.publicFlags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 && { kind: "earlySupporter" },
-      premium?.premiumSince && { kind: "premium", param: premium.premiumSince },
-      premium?.premiumGuildSince && { kind: "boosting", param: premium.premiumGuildSince },
+      cfg.get("staff", true) && (user.publicFlags & UserFlags.STAFF) !== 0 && { kind: "staff" },
+      cfg.get("partner", true) &&
+        (user.publicFlags & UserFlags.PARTNER) !== 0 && { kind: "partner" },
+      cfg.get("moderator", true) &&
+        (user.publicFlags & UserFlags.CERTIFIED_MODERATOR) !== 0 && { kind: "certifiedPedo" },
+      cfg.get("hypesquad", true) &&
+        (user.publicFlags & UserFlags.HYPESQUAD) !== 0 && { kind: "hypesquad" },
+      cfg.get("hypesquad", true) &&
+        (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_1) !== 0 && {
+          kind: "hypesquadOnline",
+          param: 1,
+        },
+      cfg.get("hypesquad", true) &&
+        (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_2) !== 0 && {
+          kind: "hypesquadOnline",
+          param: 2,
+        },
+      cfg.get("hypesquad", true) &&
+        (user.publicFlags & UserFlags.HYPESQUAD_ONLINE_HOUSE_3) !== 0 && {
+          kind: "hypesquadOnline",
+          param: 3,
+        },
+      cfg.get("bughunter", true) &&
+        (user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_1) !== 0 && { kind: "hunter", param: 1 },
+      cfg.get("bughunter", true) &&
+        (user.publicFlags & UserFlags.BUG_HUNTER_LEVEL_2) !== 0 && { kind: "hunter", param: 2 },
+      cfg.get("developer", true) &&
+        (user.publicFlags & UserFlags.VERIFIED_DEVELOPER) !== 0 && { kind: "verifiedDev" },
+      cfg.get("developer", true) &&
+        (user.publicFlags & UserFlags.ACTIVE_DEVELOPER) !== 0 && { kind: "activeDev" },
+      cfg.get("earlySupporter", true) &&
+        (user.publicFlags & UserFlags.PREMIUM_EARLY_SUPPORTER) !== 0 && { kind: "earlySupporter" },
+      cfg.get("premium", true) &&
+        premium?.premiumSince && { kind: "premium", param: premium.premiumSince },
+      cfg.get("premium", true) &&
+        premium?.premiumGuildSince && { kind: "boosting", param: premium.premiumGuildSince },
     ].filter(Boolean);
 
     return (
