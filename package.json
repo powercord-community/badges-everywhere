@@ -1,6 +1,6 @@
 {
   "name": "badges-everywhere",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Puts a user's badges in other places.",
   "engines": {
     "node": ">=14.0.0"

@@ -174,11 +174,7 @@ export default function Badges(Messages: {}) {
       <div
         className="badges"
         style={{
-          display: "inline-flex",
-          alignItems: "center",
           verticalAlign: "top",
-          position: "relative",
-          top: "-1px",
         }}>
         {badges.map((b) => b && badge(b, Messages))}
       </div>
