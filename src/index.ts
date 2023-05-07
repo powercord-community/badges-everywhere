@@ -30,7 +30,7 @@ export interface badge {
   link: string;
   src?: string;
 }
-export type profile = { 
+export type profile = {
   premiumSince: string;
   premiumGuildSince: string;
   badges: badge[];
@@ -41,14 +41,17 @@ export async function start(): Promise<void> {
     Record<string, (id: string) => profile>
   >(webpack.filters.byProps("getUserProfile"));
 
-  const getImageUrl: (id: string) => string = webpack.getFunctionBySource<(id: string) => string>(await webpack.waitForModule(
-    webpack.filters.bySource("BADGE_ICON(")
-  ), "BADGE_ICON(") as (id: string) => string;
+  const getImageUrl: (id: string) => string = webpack.getFunctionBySource<(id: string) => string>(
+    await webpack.waitForModule(webpack.filters.bySource("BADGE_ICON(")),
+    "BADGE_ICON(",
+  ) as (id: string) => string;
 
-  const fetchUser = webpack.getFunctionBySource<(id: string) => unknown>(await webpack.waitForModule(
-    webpack.filters.bySource('"USER_PROFILE_FETCH_START"')
-  ), (source) => source.toString().includes('"USER_PROFILE_FETCH_START"') || source.toString().length < 50);
-  
+  const fetchUser = webpack.getFunctionBySource<(id: string) => unknown>(
+    await webpack.waitForModule(webpack.filters.bySource('"USER_PROFILE_FETCH_START"')),
+    (source) =>
+      source.toString().includes('"USER_PROFILE_FETCH_START"') || source.toString().length < 50,
+  );
+
   const Badges = badges(getImageUrl);
 
   const mod = await webpack.waitForModule<{

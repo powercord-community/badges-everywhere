@@ -14,21 +14,32 @@ export function Settings(): React.ReactElement {
         style={{ marginBottom: 20 }}
       />
       <SwitchItem {...util.useSetting(cfg, "avoidrates", true)}>Avoid Ratelimits</SwitchItem>
-      <Category
-        title="Display Badges"
-        open={true}
-      >
+      <Category title="Display Badges" open={true}>
         <SwitchItem {...util.useSetting(cfg, "staff", true)}>Display Staff Badges</SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "partner", true)}>Display Partner Badges</SwitchItem>
-        <SwitchItem {...util.useSetting(cfg, "moderator", true)}>Display Moderator Badges</SwitchItem>
-        <SwitchItem {...util.useSetting(cfg, "hypesquad", true)}>Display Hypesquad Badges</SwitchItem>
-        <SwitchItem {...util.useSetting(cfg, "bughunter", true)}>Display Bughunter Badges</SwitchItem>
-        <SwitchItem {...util.useSetting(cfg, "developer", true)}>Display Developer Badges</SwitchItem>
+        <SwitchItem {...util.useSetting(cfg, "moderator", true)}>
+          Display Moderator Badges
+        </SwitchItem>
+        <SwitchItem {...util.useSetting(cfg, "hypesquad", true)}>
+          Display Hypesquad Badges
+        </SwitchItem>
+        <SwitchItem {...util.useSetting(cfg, "bughunter", true)}>
+          Display Bughunter Badges
+        </SwitchItem>
+        <SwitchItem {...util.useSetting(cfg, "developer", true)}>
+          Display Developer Badges
+        </SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "earlySupporter", true)}>
           Display Early Supporter Badges
         </SwitchItem>
-        <SwitchItem {...util.useSetting(cfg, "premium", true)} note="Both guild boosting and nitro subscription">Display Premium Badges</SwitchItem>
-        <SwitchItem {...util.useSetting(cfg, "bot", true)} note="Includes slash command badge">Display Bot Badges</SwitchItem>
+        <SwitchItem
+          {...util.useSetting(cfg, "premium", true)}
+          note="Both guild boosting and nitro subscription">
+          Display Premium Badges
+        </SwitchItem>
+        <SwitchItem {...util.useSetting(cfg, "bot", true)} note="Includes slash command badge">
+          Display Bot Badges
+        </SwitchItem>
       </Category>
     </>
   );

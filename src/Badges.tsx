@@ -3,29 +3,35 @@ import { User } from "discord-types/general";
 import { SettingsType, badge, cfg, profile } from ".";
 
 const { profileBadge24 } = webpack.getByProps("profileBadge24") as Record<string, string>;
-const { anchor, anchorUnderlineOnHover } = webpack.getByProps("anchor", "anchorUnderlineOnHover") as Record<string, string>;
+const { anchor, anchorUnderlineOnHover } = webpack.getByProps(
+  "anchor",
+  "anchorUnderlineOnHover",
+) as Record<string, string>;
 
 const BadgeSettingMapping: Record<string, keyof SettingsType> = {
-  "staff": "staff",
-  "partner": "partner",
-  "hypesquad_house": "hypesquad",
-  "bug_hunter": "bughunter",
-  "early_supporter": "earlySupporter",
-  "active_developer": "developer",
-  "verified_developer": "developer",
-  "certified_moderator": "moderator",
-  "premium": "premium",
-  "guild_booster_lvl": "premium",
-  "bot_commands": "bot",
+  staff: "staff",
+  partner: "partner",
+  hypesquad_house: "hypesquad",
+  bug_hunter: "bughunter",
+  early_supporter: "earlySupporter",
+  active_developer: "developer",
+  verified_developer: "developer",
+  certified_moderator: "moderator",
+  premium: "premium",
+  guild_booster_lvl: "premium",
+  bot_commands: "bot",
 };
 
-export function badge(
-  badge: badge,
-): JSX.Element {
+export function badge(badge: badge): JSX.Element {
   if (badge.link) {
     return (
       <components.Tooltip text={badge.description}>
-        <a rel="noreferrer noopener" target="_blank" role="button" href={badge.link} className={`${anchor} ${anchorUnderlineOnHover}`}>
+        <a
+          rel="noreferrer noopener"
+          target="_blank"
+          role="button"
+          href={badge.link}
+          className={`${anchor} ${anchorUnderlineOnHover}`}>
           <img alt="" src={badge.src} className={profileBadge24} />
         </a>
       </components.Tooltip>
@@ -44,31 +50,27 @@ export function badge(
 export const cache: Record<string, User> = {};
 
 export default function Badges(getImageUrl: (id: string) => string) {
-  return (props: {
-    user: profile;
-  }): JSX.Element | null => {
+  return (props: { user: profile }): JSX.Element | null => {
     let { user } = props;
 
     if (user && user.badges) {
-      user.badges = user.badges.map((badge) => {
-        badge.src = getImageUrl(badge.icon);
+      user.badges = user.badges
+        .map((badge) => {
+          badge.src = getImageUrl(badge.icon);
 
-        for (const key in BadgeSettingMapping) {
-          if (badge.id.startsWith(key)) {
-            if (!cfg.get(BadgeSettingMapping[key], true)) {
-              return false;
+          for (const key in BadgeSettingMapping) {
+            if (badge.id.startsWith(key)) {
+              if (!cfg.get(BadgeSettingMapping[key], true)) {
+                return false;
+              }
             }
           }
-        }
 
-        return badge;
-      }).filter(Boolean) as badge[];
+          return badge;
+        })
+        .filter(Boolean) as badge[];
 
-      return (
-        <div className="badges-everywhere">
-          {user.badges.map((b) => b && badge(b))}
-        </div>
-      );
+      return <div className="badges-everywhere">{user.badges.map((b) => b && badge(b))}</div>;
     } else {
       return null;
     }
