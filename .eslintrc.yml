@@ -55,3 +55,4 @@ overrides:
   - files: "src/**/*.ts"
     parserOptions:
       project: tsconfig.json
+      tsconfigRootDir: badges-everywhere/
