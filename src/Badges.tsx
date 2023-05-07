@@ -1,3 +1,4 @@
+
 import { components, webpack } from "replugged";
 import { User } from "discord-types/general";
 import { SettingsType, badge, cfg, profile } from ".";
@@ -8,6 +9,7 @@ const { anchor, anchorUnderlineOnHover } = webpack.getByProps(
   "anchorUnderlineOnHover",
 ) as Record<string, string>;
 
+/* eslint-disable camelcase */
 const BadgeSettingMapping: Record<string, keyof SettingsType> = {
   staff: "staff",
   partner: "partner",
@@ -21,6 +23,7 @@ const BadgeSettingMapping: Record<string, keyof SettingsType> = {
   guild_booster_lvl: "premium",
   bot_commands: "bot",
 };
+/* eslint-enable camelcase */
 
 export function badge(badge: badge): JSX.Element {
   if (badge.link) {
