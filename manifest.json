@@ -9,8 +9,8 @@
   },
   "version": "1.2.0",
   "updater": {
-    "type": "github",
-    "id": "qwerty-mods/badges-everywhere"
+    "type": "store",
+    "id": "dev.kingfish.CopyRaw"
   },
   "license": "MIT",
   "type": "replugged-plugin",
