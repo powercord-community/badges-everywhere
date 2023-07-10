@@ -11,6 +11,7 @@ const { anchor, anchorUnderlineOnHover } = webpack.getByProps(
 
 /* eslint-disable camelcase */
 const BadgeSettingMapping: Record<string, keyof SettingsType> = {
+  legacy_username: "legacyUsername",
   staff: "staff",
   partner: "partner",
   hypesquad_house: "hypesquad",
@@ -59,6 +60,7 @@ export default function Badges(getImageUrl: (id: string) => string) {
     if (user && user.badges) {
       user.badges = user.badges
         .map((badge) => {
+          console.log(badge);
           badge.src = getImageUrl(badge.icon);
 
           for (const key in BadgeSettingMapping) {

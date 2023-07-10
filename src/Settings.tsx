@@ -6,7 +6,6 @@ const { SwitchItem, Category, FormNotice } = components;
 export function Settings(): React.ReactElement {
   return (
     <>
-      {/* @ts-expect-error  hope for fix soon*/}
       <FormNotice
         title="Avoid Ratelimits"
         body="If disabled, you may be ratelimited. Due to the nature of discord's method of fetching badges (apis), users may not have their badges displayed until you click their profile. By disabling this setting, you bypass this and immediately fetch all badges needed to display on screen. This can be prone to ratelimits."
@@ -15,6 +14,7 @@ export function Settings(): React.ReactElement {
       />
       <SwitchItem {...util.useSetting(cfg, "avoidrates", true)}>Avoid Ratelimits</SwitchItem>
       <Category title="Display Badges" open={true}>
+        <SwitchItem {...util.useSetting(cfg, "legacyUsername", true)}>Display Legacy Username Badges</SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "staff", true)}>Display Staff Badges</SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "partner", true)}>Display Partner Badges</SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "moderator", true)}>

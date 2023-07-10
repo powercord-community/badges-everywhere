@@ -10,6 +10,7 @@ export { Settings } from "./Settings";
 const injector = new Injector();
 
 export interface SettingsType {
+  legacyUsername?: boolean;
   staff?: boolean;
   partner?: boolean;
   moderator?: boolean;
