@@ -58,7 +58,7 @@ export default function Badges(getImageUrl: (id: string) => string) {
     let { user } = props;
 
     if (user && user.badges) {
-      user.badges = user.badges
+      let badges = user.badges
         .map((badge) => {
           console.log(badge);
           badge.src = getImageUrl(badge.icon);
@@ -75,7 +75,7 @@ export default function Badges(getImageUrl: (id: string) => string) {
         })
         .filter(Boolean) as badge[];
 
-      return <div className="badges-everywhere">{user.badges.map((b) => b && badge(b))}</div>;
+      return <div className="badges-everywhere">{badges.map((b) => b && badge(b))}</div>;
     } else {
       return null;
     }
