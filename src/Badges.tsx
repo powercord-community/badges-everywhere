@@ -1,4 +1,3 @@
-
 import { components, webpack } from "replugged";
 import { User } from "discord-types/general";
 import { SettingsType, badge, cfg, profile } from ".";

@@ -14,7 +14,9 @@ export function Settings(): React.ReactElement {
       />
       <SwitchItem {...util.useSetting(cfg, "avoidrates", true)}>Avoid Ratelimits</SwitchItem>
       <Category title="Display Badges" open={true}>
-        <SwitchItem {...util.useSetting(cfg, "legacyUsername", true)}>Display Legacy Username Badges</SwitchItem>
+        <SwitchItem {...util.useSetting(cfg, "legacyUsername", true)}>
+          Display Legacy Username Badges
+        </SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "staff", true)}>Display Staff Badges</SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "partner", true)}>Display Partner Badges</SwitchItem>
         <SwitchItem {...util.useSetting(cfg, "moderator", true)}>

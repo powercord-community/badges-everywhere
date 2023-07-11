@@ -1,9 +1,10 @@
 {
   "name": "badges-everywhere",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Puts a user's badges in other places.",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   },
   "scripts": {
     "build": "replugged build plugin",
